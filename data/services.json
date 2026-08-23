@@ -1,0 +1,114 @@
+[
+  {
+    "id": "diagnostics",
+    "name": "Diagnostics",
+    "nameTa": "நோயறிதல்",
+    "description": "Digital X-ray, ultrasound and CT imaging with timely reporting for OPD, inpatient and emergency care.",
+    "descriptionTa": "டிஜிட்டல் எக்ஸ்ரே, அல்ட்ராசவுண்ட் மற்றும் சிடி இமேஜிங் சேவைகள்.",
+    "status": "active"
+  },
+  {
+    "id": "laboratory",
+    "name": "Laboratory Services",
+    "nameTa": "ஆய்வக சேவைகள்",
+    "description": "Haematology, biochemistry and immunology with home sample collection by appointment.",
+    "descriptionTa": "இரத்தவியல், உயிர்வேதியியல் மற்றும் வீட்டு மாதிரி சேகரிப்பு.",
+    "status": "active"
+  },
+  {
+    "id": "pharmacy",
+    "name": "Pharmacy",
+    "nameTa": "மருந்தகம்",
+    "description": "A 24-hour in-house pharmacy for inpatients and discharged patients.",
+    "descriptionTa": "உள்நோயாளிகள் மற்றும் வெளியேறும் நோயாளிகளுக்கான 24 மணி நேர மருந்தகம்.",
+    "status": "active"
+  },
+  {
+    "id": "ambulance",
+    "name": "Ambulance",
+    "nameTa": "ஆம்புலன்ஸ்",
+    "description": "Advanced life-support ambulance for transfers and emergency pickup within city limits.",
+    "descriptionTa": "நகருக்குள் அவசர பிக்அப் மற்றும் பரிமாற்றத்திற்கான ஆம்புலன்ஸ்.",
+    "status": "active"
+  },
+  {
+    "id": "emergency-care",
+    "name": "Emergency Care",
+    "nameTa": "அவசர சிகிச்சை",
+    "description": "24×7 triage, resuscitation and rapid access to imaging, laboratory and ICU.",
+    "descriptionTa": "24×7 முன்னுரிமை வகைப்படுத்தல் மற்றும் தீவிர சிகிச்சை அணுகல்.",
+    "status": "active"
+  },
+  {
+    "id": "icu",
+    "name": "ICU / Critical Care",
+    "nameTa": "ஐசியூ / தீவிர சிகிச்சை",
+    "description": "Monitored beds for medical, surgical and post-operative critical illness.",
+    "descriptionTa": "மருத்துவ மற்றும் அறுவை தீவிர நோய்களுக்கான கண்காணிப்பு படுக்கைகள்.",
+    "status": "active"
+  },
+  {
+    "id": "physiotherapy",
+    "name": "Physiotherapy",
+    "nameTa": "உடலியக்க சிகிச்சை",
+    "description": "Rehabilitation after orthopaedic injury, stroke and post-surgical recovery.",
+    "descriptionTa": "எலும்பு காயம், பக்கவாதம் மற்றும் அறுவை சிகிச்சைக்குப் பின் மறுவாழ்வு.",
+    "status": "active"
+  },
+  {
+    "id": "checkups",
+    "name": "Health Checkups",
+    "nameTa": "உடல்நல பரிசோதனைகள்",
+    "description": "Structured packages from basic screening to executive and cardiac evaluation.",
+    "descriptionTa": "அடிப்படை முதல் நிர்வாக மற்றும் இதய மதிப்பீடு வரை கட்டமைக்கப்பட்ட தொகுப்புகள்.",
+    "status": "active"
+  },
+  {
+    "id": "preventive",
+    "name": "Preventive Healthcare",
+    "nameTa": "தடுப்பு சுகாதாரம்",
+    "description": "Lifestyle counselling, immunisation advice and chronic-disease screening.",
+    "descriptionTa": "வாழ்க்கை முறை ஆலோசனை மற்றும் நாள்பட்ட நோய் பரிசோதனை.",
+    "status": "active"
+  },
+  {
+    "id": "home-sample",
+    "name": "Home Sample Collection",
+    "nameTa": "வீட்டு மாதிரி சேகரிப்பு",
+    "description": "Phlebotomy at home for registered patients within the hospital catchment.",
+    "descriptionTa": "பதிவு செய்யப்பட்ட நோயாளிகளுக்கு வீட்டில் இரத்த மாதிரி சேகரிப்பு.",
+    "status": "active"
+  },
+  {
+    "id": "home-care",
+    "name": "Home Healthcare",
+    "nameTa": "வீட்டு சுகாதார சேவை",
+    "description": "Post-discharge nursing support and physician review by arrangement.",
+    "descriptionTa": "வெளியேற்றத்திற்குப் பின் செவிலியர் ஆதரவு மற்றும் மருத்துவர் மதிப்பீடு.",
+    "status": "active"
+  },
+  {
+    "id": "online",
+    "name": "Online Consultation",
+    "nameTa": "ஆன்லைன் ஆலோசனை",
+    "description": "Follow-up video consults for selected specialities after an in-person first visit.",
+    "descriptionTa": "தேர்ந்தெடுக்கப்பட்ட துறைகளில் பின்தொடர்தல் வீடியோ ஆலோசனை.",
+    "status": "active"
+  },
+  {
+    "id": "insurance",
+    "name": "Insurance / TPA Assistance",
+    "nameTa": "காப்பீடு / TPA உதவி",
+    "description": "Helpdesk support for cashless authorisation, pre-auth and claim documentation.",
+    "descriptionTa": "கேஷ்லெஸ் அனுமதி மற்றும் கோரிக்கை ஆவணங்களுக்கான உதவி.",
+    "status": "active"
+  },
+  {
+    "id": "international",
+    "name": "International Patient Services",
+    "nameTa": "சர்வதேச நோயாளி சேவைகள்",
+    "description": "Appointment coordination, interpreter support and medical reports for overseas patients.",
+    "descriptionTa": "வெளிநாட்டு நோயாளிகளுக்கான அப்பாயின்மென்ட் ஒருங்கிணைப்பு மற்றும் மொழிபெயர்ப்பு உதவி.",
+    "status": "active"
+  }
+]

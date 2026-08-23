@@ -1,0 +1,545 @@
+[
+  {
+    "id": "r-sharma",
+    "slug": "dr-r-sharma",
+    "name": "Dr. R. Sharma",
+    "nameTa": "டாக்டர் ஆர். சர்மா",
+    "qualifications": "MBBS, MD (General Medicine)",
+    "departmentId": "general-medicine",
+    "speciality": "General Medicine",
+    "specialityTa": "பொது மருத்துவம்",
+    "experience": 18,
+    "photo": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=800&q=80",
+    "expertise": [
+      "Diabetes and hypertension",
+      "Infectious diseases",
+      "Preventive health",
+      "Inpatient medicine"
+    ],
+    "expertiseTa": [
+      "நீரிழிவு மற்றும் உயர் அழுத்தம்",
+      "தொற்று நோய்கள்",
+      "தடுப்பு நலன்",
+      "உள்நோயாளி மருத்துவம்"
+    ],
+    "bio": "Dr. R. Sharma is Senior Consultant in General Medicine with nearly two decades of experience in adult internal medicine. He is known for methodical evaluation, clear communication with families, and long-term management of chronic disease.",
+    "bioTa": "டாக்டர் ஆர். சர்மா பொது மருத்துவத்தில் மூத்த ஆலோசகர். வயதுவந்தோர் உள் மருத்துவத்தில் சுமார் இருபது ஆண்டுகள் அனுபவம் கொண்டவர்.",
+    "days": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "start": "09:00",
+    "end": "17:30",
+    "lunchStart": "13:00",
+    "lunchEnd": "14:00",
+    "status": "active"
+  },
+  {
+    "id": "anitha-verma",
+    "slug": "dr-anitha-verma",
+    "name": "Dr. Anitha Verma",
+    "nameTa": "டாக்டர் அனிதா வர்மா",
+    "qualifications": "MBBS, MS (Obstetrics & Gynaecology)",
+    "departmentId": "obg",
+    "speciality": "Obstetrics & Gynaecology",
+    "specialityTa": "மகப்பேறு மற்றும் மகளிர் நோய்",
+    "experience": 15,
+    "photo": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=800&q=80",
+    "expertise": [
+      "Antenatal care",
+      "High-risk pregnancy",
+      "Gynaecological disorders",
+      "Women’s wellness"
+    ],
+    "expertiseTa": [
+      "கர்ப்பகால பராமரிப்பு",
+      "அதிக ஆபத்துள்ள கர்ப்பம்",
+      "மகளிர் நோய்கள்",
+      "பெண்கள் நலன்"
+    ],
+    "bio": "Dr. Anitha Verma provides obstetric and gynaecological care with a focus on safe pregnancy, respectful maternity care and evidence-based treatment of common gynaecological conditions.",
+    "bioTa": "டாக்டர் அனிதா வர்மா பாதுகாப்பான கர்ப்பம் மற்றும் மரியாதையான மகப்பேறு பராமரிப்பில் கவனம் செலுத்தி மகளிர் நல சிகிச்சை அளிக்கிறார்.",
+    "days": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "start": "09:00",
+    "end": "16:00",
+    "lunchStart": "13:00",
+    "lunchEnd": "14:00",
+    "status": "active"
+  },
+  {
+    "id": "s-patel",
+    "slug": "dr-s-patel",
+    "name": "Dr. S. Patel",
+    "nameTa": "டாக்டர் எஸ். படேல்",
+    "qualifications": "MBBS, MS (Orthopaedics)",
+    "departmentId": "orthopaedics",
+    "speciality": "Orthopaedics",
+    "specialityTa": "எலும்பியல்",
+    "experience": 14,
+    "photo": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=800&q=80",
+    "expertise": [
+      "Fracture management",
+      "Arthritis care",
+      "Sports injuries",
+      "Joint preservation"
+    ],
+    "expertiseTa": [
+      "எலும்பு முறிவு சிகிச்சை",
+      "கீல்வாத பராமரிப்பு",
+      "விளையாட்டு காயங்கள்",
+      "மூட்டு பாதுகாப்பு"
+    ],
+    "bio": "Dr. S. Patel is Consultant Orthopaedic Surgeon with experience in trauma, degenerative joint disease and sports-related injuries. He emphasises early mobilisation and structured physiotherapy.",
+    "bioTa": "டாக்டர் எஸ். படேல் எலும்பியல் அறுவை சிகிச்சை ஆலோசகர். காயம், மூட்டு நோய் மற்றும் விளையாட்டு காயங்களில் அனுபவம் கொண்டவர்.",
+    "days": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "start": "09:00",
+    "end": "17:30",
+    "lunchStart": "13:00",
+    "lunchEnd": "14:00",
+    "status": "active"
+  },
+  {
+    "id": "meera-iyer",
+    "slug": "dr-meera-iyer",
+    "name": "Dr. Meera Iyer",
+    "nameTa": "டாக்டர் மீரா அய்யர்",
+    "qualifications": "MBBS, MD (Paediatrics)",
+    "departmentId": "paediatrics",
+    "speciality": "Paediatrics",
+    "specialityTa": "குழந்தை மருத்துவம்",
+    "experience": 12,
+    "photo": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=800&q=80",
+    "expertise": [
+      "Childhood infections",
+      "Growth and development",
+      "Immunisation guidance",
+      "Adolescent health"
+    ],
+    "expertiseTa": [
+      "குழந்தை தொற்றுகள்",
+      "வளர்ச்சி மற்றும் வளர்ச்சி",
+      "நோய்த்தடுப்பு வழிகாட்டுதல்",
+      "இளம் பருவ நலன்"
+    ],
+    "bio": "Dr. Meera Iyer is Consultant Paediatrician known for calm, family-centred consultations. She manages common childhood illnesses and follows children through growth, nutrition and school-age health.",
+    "bioTa": "டாக்டர் மீரா அய்யர் குழந்தை மருத்துவ ஆலோசகர். குடும்பத்தை மையமாகக் கொண்ட அணுகுமுறையுடன் குழந்தை நல சிகிச்சை அளிக்கிறார்.",
+    "days": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "start": "09:00",
+    "end": "18:00",
+    "lunchStart": "13:00",
+    "lunchEnd": "14:00",
+    "status": "active"
+  },
+  {
+    "id": "k-raman",
+    "slug": "dr-k-raman",
+    "name": "Dr. K. Raman",
+    "nameTa": "டாக்டர் கே. ராமன்",
+    "qualifications": "MBBS, DM (Cardiology)",
+    "departmentId": "cardiology",
+    "speciality": "Cardiology",
+    "specialityTa": "இதயவியல்",
+    "experience": 16,
+    "photo": "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=800&q=80",
+    "expertise": [
+      "Coronary artery disease",
+      "Heart failure",
+      "Hypertension",
+      "Preventive cardiology"
+    ],
+    "expertiseTa": [
+      "கரோனரி தமனி நோய்",
+      "இதய செயலிழப்பு",
+      "உயர் அழுத்தம்",
+      "தடுப்பு இதயவியல்"
+    ],
+    "bio": "Dr. K. Raman is Senior Consultant Cardiologist. He focuses on early risk identification, medical management of ischaemic heart disease and coordinated emergency cardiac care.",
+    "bioTa": "டாக்டர் கே. ராமன் மூத்த இதயவியல் ஆலோசகர். இதய நோய் ஆபத்தை முன்கூட்டியே கண்டறிவதில் கவனம் செலுத்துகிறார்.",
+    "days": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "start": "09:00",
+    "end": "17:00",
+    "lunchStart": "13:00",
+    "lunchEnd": "14:00",
+    "status": "active"
+  },
+  {
+    "id": "priya-nair",
+    "slug": "dr-priya-nair",
+    "name": "Dr. Priya Nair",
+    "nameTa": "டாக்டர் பிரியா நாயர்",
+    "qualifications": "MBBS, DM (Neurology)",
+    "departmentId": "neurology",
+    "speciality": "Neurology",
+    "specialityTa": "நரம்பியல்",
+    "experience": 11,
+    "photo": "https://images.unsplash.com/photo-1651009757985-6cb69c509ea0?auto=format&fit=crop&w=800&q=80",
+    "expertise": [
+      "Stroke",
+      "Epilepsy",
+      "Headache disorders",
+      "Neuropathy"
+    ],
+    "expertiseTa": [
+      "பக்கவாதம்",
+      "வலிப்பு",
+      "தலைவலி கோளாறுகள்",
+      "நரம்பு பாதிப்பு"
+    ],
+    "bio": "Dr. Priya Nair is Consultant Neurologist with experience in acute stroke pathways, chronic headache and epilepsy follow-up. She works closely with radiology and rehabilitation services.",
+    "bioTa": "டாக்டர் பிரியா நாயர் நரம்பியல் ஆலோசகர். பக்கவாதம், தலைவலி மற்றும் வலிப்பு சிகிச்சையில் அனுபவம் கொண்டவர்.",
+    "days": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "start": "10:00",
+    "end": "16:30",
+    "lunchStart": "13:00",
+    "lunchEnd": "14:00",
+    "status": "active"
+  },
+  {
+    "id": "arjun-menon",
+    "slug": "dr-arjun-menon",
+    "name": "Dr. Arjun Menon",
+    "nameTa": "டாக்டர் அர்ஜுன் மேனன்",
+    "qualifications": "MBBS, MD (Dermatology)",
+    "departmentId": "dermatology",
+    "speciality": "Dermatology",
+    "specialityTa": "தோல் மருத்துவம்",
+    "experience": 9,
+    "photo": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=800&q=80",
+    "expertise": [
+      "Acne",
+      "Eczema",
+      "Pigmentation",
+      "Hair disorders"
+    ],
+    "expertiseTa": [
+      "முகப்பரு",
+      "அரிக்கும் தோல்",
+      "நிறமாற்றம்",
+      "முடி கோளாறுகள்"
+    ],
+    "bio": "Dr. Arjun Menon provides medical dermatology for adults and adolescents, with a practical, stepwise approach to chronic skin disease and patient education.",
+    "bioTa": "டாக்டர் அர்ஜுன் மேனன் வயதுவந்தோர் மற்றும் இளம் பருவத்தினருக்கான தோல் மருத்துவ சிகிச்சை அளிக்கிறார்.",
+    "days": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "start": "10:00",
+    "end": "16:00",
+    "lunchStart": "13:00",
+    "lunchEnd": "14:00",
+    "status": "active"
+  },
+  {
+    "id": "lakshmi-krishnan",
+    "slug": "dr-lakshmi-krishnan",
+    "name": "Dr. Lakshmi Krishnan",
+    "nameTa": "டாக்டர் லட்சுமி கிருஷ்ணன்",
+    "qualifications": "MBBS, MS (ENT)",
+    "departmentId": "ent",
+    "speciality": "ENT",
+    "specialityTa": "காது, மூக்கு, தொண்டை",
+    "experience": 13,
+    "photo": "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=80",
+    "expertise": [
+      "Sinus disease",
+      "Hearing loss",
+      "Paediatric ENT",
+      "Throat infections"
+    ],
+    "expertiseTa": [
+      "சைனஸ் நோய்",
+      "கேட்கும் திறன் குறைவு",
+      "குழந்தை ENT",
+      "தொண்டை தொற்று"
+    ],
+    "bio": "Dr. Lakshmi Krishnan is Consultant ENT Surgeon. She treats sinus, ear and throat conditions and is attentive to paediatric ENT presentations that worry parents.",
+    "bioTa": "டாக்டர் லட்சுமி கிருஷ்ணன் ENT அறுவை சிகிச்சை ஆலோசகர். சைனஸ், காது மற்றும் தொண்டை நிலைகளுக்கு சிகிச்சை அளிக்கிறார்.",
+    "days": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "start": "09:30",
+    "end": "17:00",
+    "lunchStart": "13:00",
+    "lunchEnd": "14:00",
+    "status": "active"
+  },
+  {
+    "id": "n-venkatesh",
+    "slug": "dr-n-venkatesh",
+    "name": "Dr. N. Venkatesh",
+    "nameTa": "டாக்டர் என். வெங்கடேஷ்",
+    "qualifications": "MBBS, MCh (Urology)",
+    "departmentId": "urology",
+    "speciality": "Urology",
+    "specialityTa": "சிறுநீரகவியல்",
+    "experience": 17,
+    "photo": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=800&q=80",
+    "expertise": [
+      "Kidney stones",
+      "Prostate health",
+      "Urinary tract infection",
+      "Male urology"
+    ],
+    "expertiseTa": [
+      "சிறுநீரக கற்கள்",
+      "புரோஸ்டேட் நலன்",
+      "சிறுநீர் பாதை தொற்று",
+      "ஆண் சிறுநீரகவியல்"
+    ],
+    "bio": "Dr. N. Venkatesh is Senior Consultant Urologist with extensive experience in stone disease and prostate care, supported by imaging and laboratory diagnostics.",
+    "bioTa": "டாக்டர் என். வெங்கடேஷ் மூத்த சிறுநீரகவியல் ஆலோசகர். கல் நோய் மற்றும் புரோஸ்டேட் பராமரிப்பில் அனுபவம் கொண்டவர்.",
+    "days": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "start": "09:00",
+    "end": "16:30",
+    "lunchStart": "13:00",
+    "lunchEnd": "14:00",
+    "status": "active"
+  },
+  {
+    "id": "divya-reddy",
+    "slug": "dr-divya-reddy",
+    "name": "Dr. Divya Reddy",
+    "nameTa": "டாக்டர் திவ்யா ரெட்டி",
+    "qualifications": "MBBS, DM (Gastroenterology)",
+    "departmentId": "gastro",
+    "speciality": "Gastroenterology",
+    "specialityTa": "இரைப்பை குடல் மருத்துவம்",
+    "experience": 10,
+    "photo": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=800&q=80",
+    "expertise": [
+      "Acidity and reflux",
+      "Liver disease",
+      "IBS",
+      "Endoscopy"
+    ],
+    "expertiseTa": [
+      "அமிலத்தன்மை",
+      "கல்லீரல் நோய்",
+      "ஐபிஎஸ்",
+      "எண்டோஸ்கோபி"
+    ],
+    "bio": "Dr. Divya Reddy is Consultant Gastroenterologist. She manages digestive and liver disorders and advises on diet, investigation and follow-up with clarity.",
+    "bioTa": "டாக்டர் திவ்யா ரெட்டி இரைப்பை குடல் மருத்துவ ஆலோசகர். செரிமான மற்றும் கல்லீரல் கோளாறுகளுக்கு சிகிச்சை அளிக்கிறார்.",
+    "days": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "start": "09:00",
+    "end": "16:00",
+    "lunchStart": "13:00",
+    "lunchEnd": "14:00",
+    "status": "active"
+  },
+  {
+    "id": "suresh-babu",
+    "slug": "dr-suresh-babu",
+    "name": "Dr. Suresh Babu",
+    "nameTa": "டாக்டர் சுரேஷ் பாபு",
+    "qualifications": "MBBS, MD, DM (Pulmonology)",
+    "departmentId": "pulmonology",
+    "speciality": "Pulmonology",
+    "specialityTa": "நுரையீரல் மருத்துவம்",
+    "experience": 14,
+    "photo": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=800&q=80",
+    "expertise": [
+      "Asthma",
+      "COPD",
+      "Pneumonia",
+      "Chronic cough"
+    ],
+    "expertiseTa": [
+      "ஆஸ்துமா",
+      "சிஓபிடி",
+      "நிமோனியா",
+      "நாள்பட்ட இருமல்"
+    ],
+    "bio": "Dr. Suresh Babu is Consultant Pulmonologist with experience in airway disease and respiratory infections. Pulmonary function testing is used to guide long-term treatment.",
+    "bioTa": "டாக்டர் சுரேஷ் பாபு நுரையீரல் மருத்துவ ஆலோசகர். சுவாச நோய் மற்றும் தொற்றுகளில் அனுபவம் கொண்டவர்.",
+    "days": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "start": "09:30",
+    "end": "17:00",
+    "lunchStart": "13:00",
+    "lunchEnd": "14:00",
+    "status": "active"
+  },
+  {
+    "id": "fatima-khan",
+    "slug": "dr-fatima-khan",
+    "name": "Dr. Fatima Khan",
+    "nameTa": "டாக்டர் பாத்திமா கான்",
+    "qualifications": "MBBS, DM (Nephrology)",
+    "departmentId": "nephrology",
+    "speciality": "Nephrology",
+    "specialityTa": "சிறுநீரக மருத்துவம்",
+    "experience": 12,
+    "photo": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=800&q=80",
+    "expertise": [
+      "Chronic kidney disease",
+      "Hypertension",
+      "Dialysis counselling",
+      "Electrolyte disorders"
+    ],
+    "expertiseTa": [
+      "நாள்பட்ட சிறுநீரக நோய்",
+      "உயர் அழுத்தம்",
+      "டயலிசிஸ் ஆலோசனை",
+      "எலக்ட்ரோலைட் கோளாறுகள்"
+    ],
+    "bio": "Dr. Fatima Khan is Consultant Nephrologist. She focuses on slowing CKD progression, blood pressure control and preparing patients for dialysis when clinically required.",
+    "bioTa": "டாக்டர் பாத்திமா கான் சிறுநீரக மருத்துவ ஆலோசகர். நாள்பட்ட சிறுநீரக நோய் முன்னேற்றத்தை குறைப்பதில் கவனம் செலுத்துகிறார்.",
+    "days": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "start": "09:00",
+    "end": "15:30",
+    "lunchStart": "13:00",
+    "lunchEnd": "14:00",
+    "status": "active"
+  },
+  {
+    "id": "vijay-kumar",
+    "slug": "dr-vijay-kumar",
+    "name": "Dr. Vijay Kumar",
+    "nameTa": "டாக்டர் விஜய் குமார்",
+    "qualifications": "MBBS, MS (General Surgery)",
+    "departmentId": "surgery",
+    "speciality": "General Surgery",
+    "specialityTa": "பொது அறுவை சிகிச்சை",
+    "experience": 19,
+    "photo": "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=800&q=80",
+    "expertise": [
+      "Hernia",
+      "Gall bladder disease",
+      "Emergency surgery",
+      "Wound management"
+    ],
+    "expertiseTa": [
+      "ஹெர்னியா",
+      "பித்தப்பை நோய்",
+      "அவசர அறுவை சிகிச்சை",
+      "காய மேலாண்மை"
+    ],
+    "bio": "Dr. Vijay Kumar is Senior Consultant Surgeon with experience in elective and emergency general surgery. He prioritises clear consent, safe peri-operative care and timely discharge planning.",
+    "bioTa": "டாக்டர் விஜய் குமார் மூத்த அறுவை சிகிச்சை ஆலோசகர். திட்டமிட்ட மற்றும் அவசர பொது அறுவை சிகிச்சையில் அனுபவம் கொண்டவர்.",
+    "days": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "start": "09:00",
+    "end": "16:00",
+    "lunchStart": "13:00",
+    "lunchEnd": "14:00",
+    "status": "active"
+  },
+  {
+    "id": "aisha-rahman",
+    "slug": "dr-aisha-rahman",
+    "name": "Dr. Aisha Rahman",
+    "nameTa": "டாக்டர் ஆயிஷா ரஹ்மான்",
+    "qualifications": "MBBS, MD (Emergency Medicine)",
+    "departmentId": "emergency",
+    "speciality": "Emergency Medicine",
+    "specialityTa": "அவசர மருத்துவம்",
+    "experience": 8,
+    "photo": "https://images.unsplash.com/photo-1651009757985-6cb69c509ea0?auto=format&fit=crop&w=800&q=80",
+    "expertise": [
+      "Trauma triage",
+      "Medical emergencies",
+      "Resuscitation",
+      "Acute care"
+    ],
+    "expertiseTa": [
+      "காய முன்னுரிமை",
+      "மருத்துவ அவசரங்கள்",
+      "மீட்பு சிகிச்சை",
+      "கடுமையான பராமரிப்பு"
+    ],
+    "bio": "Dr. Aisha Rahman leads emergency shifts with structured triage and rapid decision-making. She coordinates with ICU, radiology and on-call specialists for time-critical care.",
+    "bioTa": "டாக்டர் ஆயிஷா ரஹ்மான் அவசர சிகிச்சை பிரிவில் முன்னுரிமை வகைப்படுத்தல் மற்றும் விரைவான முடிவுகளுடன் பணியாற்றுகிறார்.",
+    "days": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "start": "09:00",
+    "end": "17:30",
+    "lunchStart": "13:00",
+    "lunchEnd": "14:00",
+    "status": "active"
+  }
+]

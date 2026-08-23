@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+:root {
+  --navy: #0a3558;
+  --navy-deep: #07263f;
+  --teal: #147a72;
+  --teal-dark: #0f5e58;
+  --ink: #1b2430;
+  --muted: #5b6775;
+  --line: #dce4ec;
+  --paper: #f5f8fb;
+  --white: #ffffff;
+  --emergency: #b42318;
+}
+
+@theme inline {
+  --color-navy: var(--navy);
+  --color-navy-deep: var(--navy-deep);
+  --color-teal: var(--teal);
+  --color-teal-dark: var(--teal-dark);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-paper: var(--paper);
+  --color-emergency: var(--emergency);
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+}
+
+:root {
+  --header-h: 4rem;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --header-h: 4.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --header-h: 6.75rem;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  line-height: 1.6;
+  max-width: 100%;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+body.nav-open {
+  overflow: hidden;
+}
+
+img,
+video,
+iframe {
+  max-width: 100%;
+}
+
+@media (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+h1, h2, h3, .font-serif {
+  font-family: var(--font-serif), Georgia, serif;
+  letter-spacing: -0.02em;
+}
+
+a {
+  text-decoration: none;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+::selection {
+  background: #cde8e4;
+}
+
+.container-site {
+  width: min(1180px, calc(100% - 1.5rem));
+  margin-inline: auto;
+}
+
+@media (min-width: 640px) {
+  .container-site {
+    width: min(1180px, calc(100% - 2rem));
+  }
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -40px;
+  background: var(--navy);
+  color: white;
+  padding: 0.5rem 0.75rem;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

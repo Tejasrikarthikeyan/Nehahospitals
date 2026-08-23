@@ -1,0 +1,208 @@
+[
+  {
+    "id": "basic",
+    "slug": "basic-health-checkup",
+    "name": "Basic Health Checkup",
+    "nameTa": "அடிப்படை உடல்நல பரிசோதனை",
+    "suitable": "Adults 18–40 years seeking a yearly baseline review",
+    "suitableTa": "ஆண்டு அடிப்படை பரிசோதனை தேவைப்படும் 18–40 வயதினர்",
+    "tests": [
+      "CBC",
+      "Blood sugar (fasting)",
+      "Lipid profile",
+      "Urine routine",
+      "Chest X-ray",
+      "Physician consultation"
+    ],
+    "testsTa": [
+      "சிபிசி",
+      "இரத்த சர்க்கரை (உண்ணாவிரதம்)",
+      "லிப்பிட் புரோஃபைல்",
+      "சிறுநீர் பரிசோதனை",
+      "மார்பு எக்ஸ்ரே",
+      "மருத்துவர் ஆலோசனை"
+    ],
+    "price": 2499,
+    "status": "active"
+  },
+  {
+    "id": "advanced",
+    "slug": "advanced-health-checkup",
+    "name": "Advanced Health Checkup",
+    "nameTa": "மேம்பட்ட உடல்நல பரிசோதனை",
+    "suitable": "Adults with family history of lifestyle disease",
+    "suitableTa": "வாழ்க்கை முறை நோய் குடும்ப வரலாறு உள்ளவர்கள்",
+    "tests": [
+      "CBC",
+      "HbA1c",
+      "Lipid profile",
+      "LFT",
+      "KFT",
+      "Thyroid profile",
+      "ECG",
+      "Ultrasound abdomen",
+      "Physician consultation"
+    ],
+    "testsTa": [
+      "சிபிசி",
+      "HbA1c",
+      "லிப்பிட்",
+      "கல்லீரல் பரிசோதனை",
+      "சிறுநீரக பரிசோதனை",
+      "தைராய்டு",
+      "ஈசிஜி",
+      "வயிற்று அல்ட்ராசவுண்ட்",
+      "மருத்துவர் ஆலோசனை"
+    ],
+    "price": 5499,
+    "status": "active"
+  },
+  {
+    "id": "executive",
+    "slug": "executive-health-checkup",
+    "name": "Executive Health Checkup",
+    "nameTa": "நிர்வாக உடல்நல பரிசோதனை",
+    "suitable": "Working professionals 35 years and above",
+    "suitableTa": "35 வயதுக்கு மேற்பட்ட பணிபுரியும் தொழில்முனைவோர்",
+    "tests": [
+      "Advanced blood panel",
+      "HbA1c",
+      "Vitamin D & B12",
+      "ECG",
+      "Treadmill test",
+      "2D Echo",
+      "Chest X-ray",
+      "Ultrasound",
+      "Diet counselling",
+      "Physician & specialist review"
+    ],
+    "testsTa": [
+      "மேம்பட்ட இரத்த பரிசோதனை",
+      "HbA1c",
+      "வைட்டமின் டி மற்றும் பி12",
+      "ஈசிஜி",
+      "டிரெட்மில்",
+      "2டி எக்கோ",
+      "மார்பு எக்ஸ்ரே",
+      "அல்ட்ராசவுண்ட்",
+      "உணவு ஆலோசனை",
+      "நிபுணர் மதிப்பீடு"
+    ],
+    "price": 9999,
+    "status": "active"
+  },
+  {
+    "id": "women",
+    "slug": "womens-health-checkup",
+    "name": "Women's Health Checkup",
+    "nameTa": "பெண்கள் உடல்நல பரிசோதனை",
+    "suitable": "Women 21 years and above",
+    "suitableTa": "21 வயதுக்கு மேற்பட்ட பெண்கள்",
+    "tests": [
+      "CBC",
+      "Thyroid profile",
+      "Blood sugar",
+      "Vitamin D",
+      "Pap smear (as indicated)",
+      "Ultrasound pelvis",
+      "Gynaecologist consultation"
+    ],
+    "testsTa": [
+      "சிபிசி",
+      "தைராய்டு",
+      "இரத்த சர்க்கரை",
+      "வைட்டமின் டி",
+      "பாப் ஸ்மியர்",
+      "இடுப்பு அல்ட்ராசவுண்ட்",
+      "மகளிர் மருத்துவர் ஆலோசனை"
+    ],
+    "price": 4499,
+    "status": "active"
+  },
+  {
+    "id": "senior",
+    "slug": "senior-citizen-health-checkup",
+    "name": "Senior Citizen Health Checkup",
+    "nameTa": "மூத்த குடிமக்கள் உடல்நல பரிசோதனை",
+    "suitable": "Adults 60 years and above",
+    "suitableTa": "60 வயதுக்கு மேற்பட்டவர்கள்",
+    "tests": [
+      "CBC",
+      "HbA1c",
+      "KFT",
+      "LFT",
+      "Lipid profile",
+      "ECG",
+      "Chest X-ray",
+      "Bone profile",
+      "Physician consultation",
+      "Ophthalmology screening"
+    ],
+    "testsTa": [
+      "சிபிசி",
+      "HbA1c",
+      "சிறுநீரக பரிசோதனை",
+      "கல்லீரல்",
+      "லிப்பிட்",
+      "ஈசிஜி",
+      "மார்பு எக்ஸ்ரே",
+      "எலும்பு பரிசோதனை",
+      "மருத்துவர் ஆலோசனை",
+      "கண் பரிசோதனை"
+    ],
+    "price": 6499,
+    "status": "active"
+  },
+  {
+    "id": "cardiac",
+    "slug": "cardiac-health-checkup",
+    "name": "Cardiac Health Checkup",
+    "nameTa": "இதய உடல்நல பரிசோதனை",
+    "suitable": "Adults with cardiac risk factors or family history",
+    "suitableTa": "இதய ஆபத்து காரணிகள் அல்லது குடும்ப வரலாறு உள்ளவர்கள்",
+    "tests": [
+      "Lipid profile",
+      "HbA1c",
+      "ECG",
+      "2D Echo",
+      "Treadmill test",
+      "Cardiologist consultation"
+    ],
+    "testsTa": [
+      "லிப்பிட் புரோஃபைல்",
+      "HbA1c",
+      "ஈசிஜி",
+      "2டி எக்கோ",
+      "டிரெட்மில்",
+      "இதய மருத்துவர் ஆலோசனை"
+    ],
+    "price": 7499,
+    "status": "active"
+  },
+  {
+    "id": "diabetes",
+    "slug": "diabetes-screening",
+    "name": "Diabetes Screening",
+    "nameTa": "நீரிழிவு பரிசோதனை",
+    "suitable": "Adults with thirst, fatigue, family history or overweight",
+    "suitableTa": "தாகம், சோர்வு, குடும்ப வரலாறு அல்லது அதிக எடை உள்ளவர்கள்",
+    "tests": [
+      "Fasting glucose",
+      "Post-prandial glucose",
+      "HbA1c",
+      "KFT",
+      "Urine microalbumin",
+      "Physician consultation"
+    ],
+    "testsTa": [
+      "உண்ணாவிரத சர்க்கரை",
+      "உணவுக்குப் பின் சர்க்கரை",
+      "HbA1c",
+      "சிறுநீரக பரிசோதனை",
+      "சிறுநீர் மைக்ரோஅல்புமின்",
+      "மருத்துவர் ஆலோசனை"
+    ],
+    "price": 1999,
+    "status": "active"
+  }
+]

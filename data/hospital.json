@@ -1,0 +1,26 @@
+{
+  "name": "Neha Hospitals",
+  "nameTa": "நேஹா மருத்துவமனை",
+  "city": "Chennai",
+  "address": "42, GST Road, Chromepet, Chennai – 600044, Tamil Nadu",
+  "addressTa": "42, ஜி.எஸ்.டி. சாலை, குரோம்பேட்டை, சென்னை – 600044, தமிழ்நாடு",
+  "phone": "+91 44 4567 8900",
+  "phoneRaw": "04445678900",
+  "emergency": "+91 44 4567 8911",
+  "emergencyRaw": "04445678911",
+  "whatsapp": "919840012345",
+  "email": "care@nehahospitals.in",
+  "hours": "OPD: 9:00 AM – 6:00 PM | Emergency: 24×7",
+  "hoursTa": "வெளிநோயாளர்: காலை 9:00 – மாலை 6:00 | அவசர சிகிச்சை: 24×7",
+  "mapEmbed": "https://maps.google.com/maps?q=Chromepet%20Chennai&t=&z=15&ie=UTF8&iwloc=&output=embed",
+  "stats": {
+    "years": 18,
+    "doctors": 86,
+    "beds": 220,
+    "departments": 16,
+    "patients": "4.2L+"
+  },
+  "slotMinutes": 30,
+  "advanceDays": 28,
+  "sameDayBooking": true
+}

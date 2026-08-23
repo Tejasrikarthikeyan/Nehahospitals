@@ -1,0 +1,8 @@
+{
+  "appointment_booked": true,
+  "appointment_rescheduled": true,
+  "appointment_cancelled": true,
+  "appointment_reminder": true,
+  "whatsapp_confirmation": true,
+  "sms_notification": true
+}
