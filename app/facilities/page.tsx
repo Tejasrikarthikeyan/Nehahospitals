@@ -3,6 +3,7 @@
 import { IMAGES } from "@/lib/data";
 import { SiteShell } from "@/components/SiteShell";
 import { useI18n } from "@/components/LanguageProvider";
+import { ScrollReveal } from "@/components/ScrollReveal";
 
 export default function FacilitiesPage() {
   const { t, lang } = useI18n();
@@ -23,18 +24,22 @@ export default function FacilitiesPage() {
   return (
     <SiteShell>
       <section className="border-b border-line bg-paper py-14">
-        <div className="container-site">
+        <ScrollReveal className="container-site">
           <h1 className="font-serif text-4xl text-navy sm:text-5xl">{t.facilities.title}</h1>
           <p className="mt-3 max-w-2xl text-muted">{t.facilities.lead}</p>
-        </div>
+        </ScrollReveal>
       </section>
       <section className="py-10">
         <div className="container-site columns-1 gap-4 md:columns-2">
-          {items.map((it) => (
-            <figure key={it.en} className="mb-4 break-inside-avoid">
-              <img src={it.src} alt={lang === "ta" ? it.ta : it.en} className="w-full object-cover" />
-              <figcaption className="mt-2 text-sm font-medium text-navy">{lang === "ta" ? it.ta : it.en}</figcaption>
-            </figure>
+          {items.map((it, i) => (
+            <ScrollReveal key={it.en} delay={i * 50} className="mb-4 break-inside-avoid">
+              <figure className="group">
+                <div className="overflow-hidden">
+                  <img src={it.src} alt={lang === "ta" ? it.ta : it.en} className="w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]" />
+                </div>
+                <figcaption className="mt-2 text-sm font-medium text-navy transition-colors duration-200 group-hover:text-teal">{lang === "ta" ? it.ta : it.en}</figcaption>
+              </figure>
+            </ScrollReveal>
           ))}
         </div>
       </section>

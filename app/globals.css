@@ -80,6 +80,17 @@ h1, h2, h3, .font-serif {
   letter-spacing: -0.02em;
 }
 
+/* Tamil font & alignment normalization to prevent layout jumps when switching languages */
+:lang(ta), [lang="ta"] {
+  letter-spacing: 0em !important;
+  line-height: 1.5;
+}
+
+:lang(ta) h1, :lang(ta) h2, :lang(ta) h3, :lang(ta) .font-serif {
+  letter-spacing: 0em !important;
+  line-height: 1.35;
+}
+
 a {
   text-decoration: none;
 }
@@ -122,3 +133,213 @@ button, input, select, textarea {
     text-wrap: balance;
   }
 }
+
+/* Micro-interactions & Subtle Animation Enhancements */
+
+/* Button & interactive click micro-interaction */
+button,
+a.inline-flex,
+a.inline-block,
+.btn-interactive {
+  transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+button:active:not(:disabled),
+a.inline-flex:active,
+a.inline-block:active,
+.btn-interactive:active {
+  transform: scale(0.98);
+}
+
+/* Form Inputs Focus & Error Transitions */
+input,
+select,
+textarea {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+}
+
+/* Subtle Image Scale on Hover */
+.img-zoom {
+  overflow: hidden;
+}
+
+.img-zoom img {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.img-zoom:hover img,
+img.img-hover-zoom:hover {
+  transform: scale(1.02);
+}
+
+/* Card Subtle Elevation on Hover */
+.card-hover-elevate {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+}
+
+.card-hover-elevate:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -4px rgba(10, 53, 88, 0.08);
+}
+
+/* Subtle Arrow Shift on Hover */
+.group:hover .arrow-shift {
+  transform: translateX(3px);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.arrow-shift {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Entrance Animations */
+@keyframes nhFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes nhFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes nhScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes nhCheckmark {
+  0% {
+    stroke-dashoffset: 50;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+/* Continuous Subtle Image Movement Keyframes */
+@keyframes nhSlowPan {
+  0%, 100% {
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.03) translate(-0.5%, -0.5%);
+  }
+}
+
+@keyframes nhSubtleFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.img-slow-pan {
+  animation: nhSlowPan 18s ease-in-out infinite;
+  will-change: transform;
+}
+
+.img-subtle-float {
+  animation: nhSubtleFloat 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes nhPulseOnce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-fade-up {
+  animation: nhFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: nhFadeIn 0.4s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: nhScaleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-pulse-once {
+  animation: nhPulseOnce 0.6s ease-out 1;
+}
+
+/* Checkmark SVG animation */
+.animate-checkmark-path {
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  animation: nhCheckmark 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+}
+
+/* Scroll reveal initial and active states */
+.reveal-init {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Prefers Reduced Motion Accessibility Override */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .reveal-init {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+

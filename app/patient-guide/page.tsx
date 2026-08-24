@@ -4,6 +4,7 @@ import { useState } from "react";
 import { HOSPITAL } from "@/lib/data";
 import { SiteShell } from "@/components/SiteShell";
 import { useI18n } from "@/components/LanguageProvider";
+import { ScrollReveal } from "@/components/ScrollReveal";
 
 const SECTIONS = [
   {
@@ -123,10 +124,10 @@ export default function GuidePage() {
   return (
     <SiteShell>
       <section className="border-b border-line bg-paper py-14">
-        <div className="container-site">
+        <ScrollReveal className="container-site">
           <h1 className="font-serif text-4xl text-navy sm:text-5xl">{t.guide.title}</h1>
           <p className="mt-3 max-w-2xl text-muted">{t.guide.lead}</p>
-        </div>
+        </ScrollReveal>
       </section>
       <section className="py-10">
         <div className="container-site grid gap-10 lg:grid-cols-[260px_1fr]">
@@ -134,14 +135,14 @@ export default function GuidePage() {
             <ul className="divide-y divide-line border-y border-line">
               {SECTIONS.map((s) => (
                 <li key={s.id}>
-                  <button type="button" onClick={() => setId(s.id)} className={`w-full py-3 text-left text-sm ${id === s.id ? "font-semibold text-navy" : "text-muted"}`}>
+                  <button type="button" onClick={() => setId(s.id)} className={`w-full py-3 text-left text-sm transition-all duration-200 ${id === s.id ? "font-semibold text-navy pl-2 border-l-2 border-teal bg-paper/50" : "text-muted hover:text-navy hover:pl-1"}`}>
                     {lang === "ta" ? s.ta : s.en}
                   </button>
                 </li>
               ))}
             </ul>
           </nav>
-          <article>
+          <article className="animate-fade-in key={sec.id}">
             <h2 className="font-serif text-3xl text-navy">{lang === "ta" ? sec.ta : sec.en}</h2>
             <p className="mt-4 max-w-3xl text-[15px] leading-7 text-muted">{lang === "ta" ? sec.bodyTa : sec.bodyEn}</p>
             <p className="mt-8 text-sm text-muted">{HOSPITAL.phone} · {HOSPITAL.email}</p>

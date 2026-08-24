@@ -211,26 +211,26 @@ function BookInner() {
           {error && <p className="mb-4 border border-emergency/30 bg-[#fdf4f3] p-3 text-sm text-emergency">{error}</p>}
 
           {step === "phone" && (
-            <div>
+            <div className="animate-fade-in">
               <h2 className="font-serif text-2xl text-navy">{t.book.stepPhone}</h2>
               <p className="mt-2 text-sm text-muted">{t.book.phoneHint}</p>
               <label className="mt-6 block text-sm font-medium text-navy">{t.book.mobile}</label>
               <div className="mt-2 flex">
                 <span className="inline-flex h-12 items-center border border-r-0 border-line px-3 text-sm text-muted">+91</span>
-                <input inputMode="numeric" maxLength={10} className="h-12 flex-1 border border-line px-3" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))} />
+                <input inputMode="numeric" maxLength={10} className="h-12 flex-1 border border-line px-3 focus:border-navy focus:ring-1 focus:ring-navy" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))} />
               </div>
-              <button disabled={phone.length !== 10 || loading} onClick={sendOtp} className="mt-6 h-12 bg-navy px-6 text-sm font-semibold text-white disabled:opacity-40">
+              <button disabled={phone.length !== 10 || loading} onClick={sendOtp} className="mt-6 h-12 bg-navy px-6 text-sm font-semibold text-white transition-all duration-200 hover:bg-navy-deep active:scale-95 disabled:opacity-40">
                 {t.book.sendOtp}
               </button>
             </div>
           )}
 
           {step === "otp" && (
-            <div>
+            <div className="animate-fade-in">
               <h2 className="font-serif text-2xl text-navy">{t.book.enterOtp}</h2>
               <p className="mt-2 text-sm text-muted">{t.book.otpHint} +91 {phone}</p>
               {smsOtp && (
-                <div className="mt-4 border border-line bg-paper p-4 text-sm">
+                <div className="mt-4 border border-line bg-paper p-4 text-sm animate-scale-in">
                   <p className="text-xs font-semibold uppercase tracking-wide text-muted">{t.book.smsPreview}</p>
                   <p className="mt-2 text-navy">
                     {t.book.otpSms} <strong className="tracking-[0.3em]">{smsOtp}</strong>. {t.book.otpValid}
@@ -240,18 +240,18 @@ function BookInner() {
               <input
                 inputMode="numeric"
                 maxLength={6}
-                className="mt-6 h-14 w-full border border-line text-center text-xl tracking-[0.25em] sm:text-2xl sm:tracking-[0.5em]"
+                className="mt-6 h-14 w-full border border-line text-center text-xl tracking-[0.25em] sm:text-2xl sm:tracking-[0.5em] focus:border-navy focus:ring-1 focus:ring-navy"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
               />
               <div className="mt-6 flex flex-wrap gap-3">
-                <button disabled={otp.length !== 6 || loading} onClick={verifyOtp} className="h-12 bg-navy px-6 text-sm font-semibold text-white disabled:opacity-40">
+                <button disabled={otp.length !== 6 || loading} onClick={verifyOtp} className="h-12 bg-navy px-6 text-sm font-semibold text-white transition-all duration-200 hover:bg-navy-deep active:scale-95 disabled:opacity-40">
                   {t.book.verify}
                 </button>
-                <button onClick={sendOtp} className="h-12 border border-line px-6 text-sm font-semibold text-navy">
+                <button onClick={sendOtp} className="h-12 border border-line px-6 text-sm font-semibold text-navy transition-all duration-200 hover:bg-paper active:scale-95">
                   {t.book.resend}
                 </button>
-                <button type="button" onClick={() => setStep("phone")} className="h-12 text-sm font-semibold text-teal">
+                <button type="button" onClick={() => setStep("phone")} className="h-12 text-sm font-semibold text-teal transition-colors duration-200 hover:text-teal-dark">
                   {t.book.back}
                 </button>
               </div>
@@ -259,7 +259,7 @@ function BookInner() {
           )}
 
           {step === "existing" && (
-            <div>
+            <div className="animate-fade-in">
               <h2 className="font-serif text-2xl text-navy">{t.book.existingTitle}</h2>
               <p className="mt-2 text-sm text-muted">{t.book.existingLead}</p>
               <div className="mt-6 border border-line">
@@ -277,14 +277,14 @@ function BookInner() {
                   </dl>
                 ))}
               </div>
-              <button type="button" onClick={continueAfterVerify} className="mt-6 h-12 bg-navy px-6 text-sm font-semibold text-white">
+              <button type="button" onClick={continueAfterVerify} className="mt-6 h-12 bg-navy px-6 text-sm font-semibold text-white transition-all duration-200 hover:bg-navy-deep active:scale-95">
                 {t.book.bookAnother}
               </button>
             </div>
           )}
 
           {step === "dept" && (
-            <div>
+            <div className="animate-fade-in">
               <h2 className="font-serif text-2xl text-navy">{t.book.dept}</h2>
               <ul className="mt-6 divide-y divide-line border-y border-line">
                 {DEPARTMENTS.filter((d) => d.id !== "radiology" && d.id !== "pathology").map((d) => (
@@ -296,7 +296,7 @@ function BookInner() {
                         setDoctorId("");
                         setStep("doctor");
                       }}
-                      className="flex w-full items-center justify-between py-3 text-left"
+                      className="flex w-full items-center justify-between py-3 text-left transition-colors duration-200 hover:bg-paper px-2 -mx-2"
                     >
                       <span className="text-sm font-medium text-navy">{lang === "ta" ? d.nameTa : d.name}</span>
                       <span className="text-sm text-muted">{lang === "ta" ? d.shortTa : d.short}</span>
@@ -308,12 +308,12 @@ function BookInner() {
           )}
 
           {step === "doctor" && (
-            <div>
+            <div className="animate-fade-in">
               <h2 className="font-serif text-2xl text-navy">{t.book.doctor}</h2>
               <p className="mt-1 text-sm text-muted">{lang === "ta" ? dept?.nameTa : dept?.name}</p>
               <ul className="mt-6 divide-y divide-line border-y border-line">
                 {doctors.map((d) => (
-                  <li key={d.id} className="flex items-center justify-between gap-4 py-4">
+                  <li key={d.id} className="flex items-center justify-between gap-4 py-4 transition-colors duration-200 hover:bg-paper/40 px-2 -mx-2">
                     <div>
                       <p className="font-medium text-navy">{lang === "ta" ? d.nameTa : d.name}</p>
                       <p className="text-sm text-muted">
@@ -322,7 +322,7 @@ function BookInner() {
                     </div>
                     <button
                       type="button"
-                      className="h-10 shrink-0 bg-navy px-4 text-sm font-semibold text-white"
+                      className="h-10 shrink-0 bg-navy px-4 text-sm font-semibold text-white transition-all duration-200 hover:bg-navy-deep active:scale-95"
                       onClick={() => {
                         setDoctorId(d.id);
                         setStep("date");
@@ -333,12 +333,12 @@ function BookInner() {
                   </li>
                 ))}
               </ul>
-              <button className="mt-4 text-sm text-teal" onClick={() => setStep("dept")}>{t.book.back}</button>
+              <button className="mt-4 text-sm text-teal transition-colors duration-200 hover:text-teal-dark" onClick={() => setStep("dept")}>{t.book.back}</button>
             </div>
           )}
 
           {step === "date" && doctor && (
-            <div>
+            <div className="animate-fade-in">
               <h2 className="font-serif text-2xl text-navy">{t.book.date}</h2>
               <p className="mt-2 text-sm text-muted">{t.book.dateHint}</p>
               <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4">

@@ -23,7 +23,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       {showBookFab && (
         <Link
           href="/book-appointment"
-          className="fixed z-40 bg-teal px-4 py-3 text-sm font-semibold text-white shadow-lg md:hidden"
+          className="fixed z-40 bg-teal px-4 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:bg-teal-dark active:scale-95 md:hidden"
           aria-label={t.nav.book}
           style={{ bottom: "max(1rem, env(safe-area-inset-bottom))", right: "max(1rem, env(safe-area-inset-right))" }}
         >

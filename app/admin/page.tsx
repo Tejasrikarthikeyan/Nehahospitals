@@ -797,9 +797,9 @@ export default function AdminPage() {
 
 function Metric({ label, value }: { label: string; value: number }) {
   return (
-    <div className="border border-line bg-white p-5 text-left">
+    <div className="animate-fade-up border border-line bg-white p-5 text-left transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
       <p className="text-xs uppercase tracking-[0.14em] text-muted">{label}</p>
-      <p className="mt-2 font-serif text-3xl text-navy">{value}</p>
+      <p className="mt-2 font-serif text-3xl text-navy transition-all duration-300">{value}</p>
     </div>
   );
 }
@@ -817,9 +817,9 @@ function ApptTable({
   onAction: (a: Appointment, action: string) => void;
 }) {
   return (
-    <div className="mt-4 overflow-x-auto bg-white">
+    <div className="mt-4 overflow-x-auto bg-white border border-line shadow-xs">
       <table className="w-full min-w-[860px] text-left text-sm">
-        <thead className="border-b border-line text-xs uppercase tracking-wide text-muted">
+        <thead className="border-b border-line bg-paper/60 text-xs uppercase tracking-wide text-muted">
           <tr>
             <th className="px-3 py-3">{A.colId}</th>
             <th className="px-3 py-3">{A.patient}</th>
@@ -830,16 +830,16 @@ function ApptTable({
             <th className="px-3 py-3">{A.actions}</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="divide-y divide-line">
           {rows.length === 0 && (
             <tr><td className="px-3 py-6 text-muted" colSpan={7}>{A.empty}</td></tr>
           )}
           {rows.map((a) => {
             const done = a.status === "completed";
             return (
-              <tr key={a.id} className={`border-b border-line ${done ? "bg-[#f7faf8] text-muted" : ""} ${flashId === a.id ? "bg-[#e8f4f2]" : ""}`}>
+              <tr key={a.id} className={`transition-colors duration-200 hover:bg-paper/50 ${done ? "bg-[#f7faf8] text-muted" : ""} ${flashId === a.id ? "bg-[#e8f4f2] transition-colors duration-500" : ""}`}>
                 <td className="px-3 py-3 font-medium text-navy">
-                  <button type="button" onClick={() => onRow(a)}>{a.id}</button>
+                  <button type="button" className="transition-colors duration-200 hover:text-teal font-semibold" onClick={() => onRow(a)}>{a.id}</button>
                 </td>
                 <td className="px-3 py-3">
                   {a.patientName}
@@ -849,15 +849,15 @@ function ApptTable({
                 <td className="px-3 py-3">{a.date}</td>
                 <td className="px-3 py-3">{formatTime12(a.time, lang)}</td>
                 <td className="px-3 py-3">
-                  <span className={`inline-flex items-center gap-1 text-xs font-semibold ${done ? "text-teal" : a.status === "cancelled" ? "text-emergency" : "text-navy"}`}>
+                  <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full transition-all duration-300 ${done ? "text-teal bg-teal/10" : a.status === "cancelled" ? "text-emergency bg-emergency/10" : "text-navy bg-navy/5"}`}>
                     {done ? "✓ " : ""}
                     {statusLabel(a.status)}
                   </span>
-                  {a.completedAt && <div className="text-[11px] text-muted">{new Date(a.completedAt).toLocaleString(displayLocale(lang))}</div>}
+                  {a.completedAt && <div className="text-[11px] text-muted mt-0.5">{new Date(a.completedAt).toLocaleString(displayLocale(lang))}</div>}
                 </td>
                 <td className="px-3 py-3">
                   {!done && a.status !== "cancelled" && (
-                    <select className="h-8 border border-line bg-white text-xs" defaultValue="" onChange={(e) => { if (e.target.value) onAction(a, e.target.value); e.target.value = ""; }}>
+                    <select className="h-8 border border-line bg-white text-xs transition-colors duration-200 hover:border-navy focus:border-navy focus:ring-1 focus:ring-navy" defaultValue="" onChange={(e) => { if (e.target.value) onAction(a, e.target.value); e.target.value = ""; }}>
                       <option value="">{A.actions}</option>
                       <option value="confirm">{A.confirmAppt}</option>
                       <option value="complete">{A.markComplete}</option>
