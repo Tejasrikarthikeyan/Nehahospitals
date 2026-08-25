@@ -16,25 +16,25 @@ export default function HomePage() {
 
   return (
     <SiteShell>
-      <section className="relative min-h-[78vh] overflow-hidden">
+      <section className="relative min-h-[65vh] sm:min-h-[72vh] lg:min-h-[76vh] overflow-hidden flex items-center">
         <img src={IMAGES.hero} alt="Neha Hospitals campus in Chennai" className="absolute inset-0 h-full w-full object-cover img-slow-pan" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#06243a]/92 via-[#06243a]/70 to-[#06243a]/25" />
-        <div className="container-site relative flex min-h-[70vh] items-center py-14 sm:min-h-[78vh] sm:py-20">
-          <div className="max-w-2xl text-white">
-            <p className="animate-fade-up text-xs font-semibold uppercase tracking-[0.22em] text-white/70" style={{ animationDelay: "100ms" }}>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#06243a]/92 via-[#06243a]/75 to-[#06243a]/30" />
+        <div className="container-site relative flex w-full items-center py-12 sm:py-16 lg:py-20">
+          <div className="max-w-xl sm:max-w-2xl text-white">
+            <p className="animate-fade-up text-xs font-semibold uppercase tracking-[0.2em] text-white/75" style={{ animationDelay: "100ms" }}>
               {t.home.kicker}
             </p>
-            <h1 className="animate-fade-up mt-4 font-serif text-[1.85rem] leading-[1.2] text-balance sm:text-5xl lg:text-[3.35rem]" style={{ animationDelay: "220ms" }}>
+            <h1 className="animate-fade-up mt-3 sm:mt-4 font-serif text-2xl leading-[1.25] text-balance sm:text-4xl lg:text-[2.75rem] xl:text-[3.1rem]" style={{ animationDelay: "220ms" }}>
               {t.home.headline}
             </h1>
-            <p className="animate-fade-up mt-5 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg" style={{ animationDelay: "340ms" }}>
+            <p className="animate-fade-up mt-4 sm:mt-5 max-w-lg sm:max-w-xl text-sm leading-relaxed text-white/85 sm:text-base lg:text-lg" style={{ animationDelay: "340ms" }}>
               {t.home.support}
             </p>
-            <div className="animate-fade-up mt-8 flex flex-wrap gap-3" style={{ animationDelay: "460ms" }}>
-              <Link href="/book-appointment" className="inline-flex h-12 items-center bg-teal px-6 text-sm font-semibold text-white transition-all duration-200 hover:bg-teal-dark hover:shadow-md active:scale-95">
+            <div className="animate-fade-up mt-7 sm:mt-8 flex flex-wrap items-center gap-3 sm:gap-4" style={{ animationDelay: "460ms" }}>
+              <Link href="/book-appointment" className="inline-flex h-11 sm:h-12 items-center bg-teal px-5 sm:px-6 text-sm font-semibold text-white transition-all duration-200 hover:bg-teal-dark hover:shadow-md active:scale-95">
                 {t.home.ctaBook}
               </Link>
-              <Link href="/doctors" className="inline-flex h-12 items-center border border-white/50 px-6 text-sm font-semibold text-white transition-all duration-200 hover:bg-white/10 active:scale-95">
+              <Link href="/doctors" className="inline-flex h-11 sm:h-12 items-center border border-white/50 px-5 sm:px-6 text-sm font-semibold text-white transition-all duration-200 hover:bg-white/10 active:scale-95">
                 {t.home.ctaFind}
               </Link>
             </div>
@@ -224,7 +224,7 @@ export default function HomePage() {
             <h2 className="font-serif text-3xl text-navy">{t.home.infoTitle}</h2>
             <p className="mt-2 max-w-xl text-sm text-muted">{t.home.infoLead}</p>
           </div>
-          <Link href="/patient-guide" className="inline-flex h-11 items-center border border-navy px-5 text-sm font-semibold text-navy transition-all duration-200 hover:bg-navy hover:text-white active:scale-95">
+          <Link href="/patient-guide" className="inline-flex h-11 items-center bg-navy px-5 text-sm font-semibold text-white transition-all duration-200 hover:bg-navy-deep active:scale-95">
             {t.home.infoCta}
           </Link>
         </ScrollReveal>

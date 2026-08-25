@@ -1,7 +1,8 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { DEPARTMENTS, DOCTORS, HOSPITAL, PACKAGES, SERVICES, type Department, type Doctor, type HealthPackage, type HospitalService } from "@/lib/data";
+import { HOSPITAL, DOCTORS, DEPARTMENTS, PACKAGES, SERVICES, type Department, type Doctor, type HealthPackage, type HospitalService } from "@/lib/data";
+import { getDepartments, getDoctors, getPackages, getServices, getSettings } from "@/lib/api";
 
 type Catalog = {
   doctors: Doctor[];
@@ -21,17 +22,23 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
   const [services, setServices] = useState<HospitalService[]>(SERVICES);
   const [hospital, setHospital] = useState(HOSPITAL);
 
-  function reload() {
-    fetch("/api/catalog")
-      .then((r) => r.json())
-      .then((d) => {
-        if (d.doctors) setDoctors(d.doctors);
-        if (d.departments) setDepartments(d.departments);
-        if (d.packages) setPackages(d.packages);
-        if (d.services) setServices(d.services);
-        if (d.hospital) setHospital({ ...HOSPITAL, ...d.hospital });
-      })
-      .catch(() => undefined);
+  async function reload() {
+    try {
+      const [docs, depts, pkgs, svcs, sett] = await Promise.all([
+        getDoctors(),
+        getDepartments(),
+        getPackages(),
+        getServices(),
+        getSettings(),
+      ]);
+      if (docs && docs.length > 0) setDoctors(docs);
+      if (depts && depts.length > 0) setDepartments(depts);
+      if (pkgs && pkgs.length > 0) setPackages(pkgs);
+      if (svcs && svcs.length > 0) setServices(svcs);
+      if (sett && Object.keys(sett).length) setHospital((h) => ({ ...h, ...sett }));
+    } catch {
+      // Keep default pre-populated catalog when backend is offline
+    }
   }
 
   useEffect(() => {

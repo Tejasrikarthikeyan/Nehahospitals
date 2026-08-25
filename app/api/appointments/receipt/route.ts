@@ -1,24 +1,26 @@
 import { NextResponse } from "next/server";
-import { getDepartments, getDoctors } from "@/lib/catalog-store";
+import { getAppointments, getDepartments, getDoctors } from "@/lib/api";
 import { buildReceiptPdf } from "@/lib/receipt";
-import { getAppointments } from "@/lib/store";
 
 export async function GET(req: Request) {
   const id = new URL(req.url).searchParams.get("id") || "";
-  const list = await getAppointments();
-  const appt = list.find((a) => a.id === id);
+  const list = (await getAppointments()) as Record<string, unknown>[];
+  const appt = (list || []).find((a) => a.id === id);
   if (!appt) return NextResponse.json({ error: "Appointment not found." }, { status: 404 });
-  const [doctors, departments] = await Promise.all([getDoctors(), getDepartments()]);
-  const doctor = doctors.find((d) => d.id === appt.doctorId);
-  const dept = departments.find((d) => d.id === appt.departmentId);
+  const [doctors, departments] = await Promise.all([
+    getDoctors() as Promise<Record<string, unknown>[]>,
+    getDepartments() as Promise<Record<string, unknown>[]>,
+  ]);
+  const doctor = (doctors || []).find((d) => d.id === appt.doctorId);
+  const dept = (departments || []).find((d) => d.id === appt.departmentId);
   const bytes = await buildReceiptPdf({
-    id: appt.id,
-    patientName: appt.patientName,
-    phone: appt.phone,
-    doctor: doctor?.name || "",
-    department: dept?.name || "",
-    date: appt.date,
-    time: appt.time,
+    id: String(appt.id || ""),
+    patientName: String(appt.patientName || ""),
+    phone: String(appt.phone || ""),
+    doctor: String(doctor?.name || appt.doctorName || ""),
+    department: String(dept?.name || appt.departmentName || ""),
+    date: String(appt.date || ""),
+    time: String(appt.time || ""),
   });
   return new NextResponse(Buffer.from(bytes), {
     headers: {

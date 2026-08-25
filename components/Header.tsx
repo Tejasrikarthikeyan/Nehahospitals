@@ -8,6 +8,43 @@ import { Logo } from "./Logo";
 import { useI18n } from "./LanguageProvider";
 import { useCatalog } from "./CatalogProvider";
 
+function LangSwitch({
+  id,
+  lang,
+  setLang,
+  ariaLabel,
+}: {
+  id: string;
+  lang: "en" | "ta";
+  setLang: (l: "en" | "ta") => void;
+  ariaLabel: string;
+}) {
+  return (
+    <div
+      className="inline-flex items-center h-8 text-[13px] font-semibold tracking-wide"
+      role="group"
+      aria-label={ariaLabel}
+    >
+      <button
+        type="button"
+        id={id}
+        onClick={() => setLang("en")}
+        className={`lang-toggle-btn inline-flex h-8 items-center px-2 py-0.5 leading-none transition-colors duration-200 ${lang === "en" ? "text-navy font-bold" : "text-muted hover:text-navy font-normal"}`}
+      >
+        English
+      </button>
+      <span className="text-line px-0.5 select-none">|</span>
+      <button
+        type="button"
+        onClick={() => setLang("ta")}
+        className={`lang-toggle-btn inline-flex h-8 items-center px-2 py-0.5 leading-none transition-colors duration-200 ${lang === "ta" ? "text-navy font-bold" : "text-muted hover:text-navy font-normal"}`}
+      >
+        தமிழ்
+      </button>
+    </div>
+  );
+}
+
 export function Header() {
   const { t, lang, setLang } = useI18n();
   const { hospital } = useCatalog();
@@ -44,31 +81,6 @@ export function Header() {
     return () => document.body.classList.remove("nav-open");
   }, [open]);
 
-  const LangSwitch = ({ id }: { id: string }) => (
-    <div
-      className="inline-flex items-center h-8 text-[13px] font-semibold tracking-wide"
-      role="group"
-      aria-label={t.common.language}
-    >
-      <button
-        type="button"
-        id={id}
-        onClick={() => setLang("en")}
-        className={`inline-flex h-8 items-center px-2 py-0.5 leading-none transition-colors duration-200 ${lang === "en" ? "text-navy font-bold" : "text-muted hover:text-navy font-normal"}`}
-      >
-        English
-      </button>
-      <span className="text-line px-0.5 select-none">|</span>
-      <button
-        type="button"
-        onClick={() => setLang("ta")}
-        className={`inline-flex h-8 items-center px-2 py-0.5 leading-none transition-colors duration-200 ${lang === "ta" ? "text-navy font-bold" : "text-muted hover:text-navy font-normal"}`}
-      >
-        தமிழ்
-      </button>
-    </div>
-  );
-
   return (
     <>
       <header
@@ -88,44 +100,56 @@ export function Header() {
         </div>
       </div>
 
-      <div className="container-site flex h-16 min-w-0 items-center justify-between gap-2 sm:h-[72px] sm:gap-4">
-        <Link href="/" aria-label={t.common.home} className="min-w-0 shrink">
-          <span className="sm:hidden">
-            <Logo compact />
-          </span>
-          <span className="hidden sm:inline">
-            <Logo />
-          </span>
-        </Link>
+      <div className="container-site flex h-16 w-full items-center justify-between gap-2 sm:h-[72px] sm:gap-4">
+        {/* LOGO SECTION */}
+        <div className="logo-section flex shrink-0 items-center justify-start pr-2 lg:pr-4">
+          <Link href="/" aria-label={t.common.home} className="inline-flex shrink-0 items-center">
+            <span className="sm:hidden">
+              <Logo compact />
+            </span>
+            <span className="hidden sm:inline">
+              <Logo />
+            </span>
+          </Link>
+        </div>
 
-        <nav className="hidden items-center gap-x-3.5 2xl:flex" aria-label={t.common.primaryNav}>
-          {links.map((l) => {
-            const active = l.href === "/" ? pathname === "/" : pathname.startsWith(l.href);
-            return (
-              <Link
-                key={l.href}
-                href={l.href}
-                className={`whitespace-nowrap text-[13px] font-medium transition-colors duration-200 ${active ? "text-navy font-semibold" : "text-[#3d4a58] hover:text-navy"}`}
-              >
-                {l.label}
-              </Link>
-            );
-          })}
+        {/* NAVIGATION SECTION */}
+        <nav className="navigation-section hidden min-w-0 flex-1 items-center justify-center px-1 xl:flex" aria-label={t.common.primaryNav}>
+          <div className={`flex flex-wrap items-center justify-center ${lang === "ta" ? "gap-x-2 gap-y-0.5 xl:gap-x-2.5 2xl:gap-x-4 text-[11.5px] xl:text-[12px] 2xl:text-[13px]" : "gap-x-2 xl:gap-x-3 2xl:gap-x-5 text-[12.5px] 2xl:text-[13px]"}`}>
+            {links.map((l) => {
+              const active = l.href === "/" ? pathname === "/" : pathname.startsWith(l.href);
+              return (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  className={`group relative py-1 whitespace-nowrap font-medium transition-colors duration-200 ${active ? "text-navy font-semibold" : "text-[#3d4a58] hover:text-navy"}`}
+                >
+                  <span>{l.label}</span>
+                  <span
+                    className={`absolute bottom-0 left-0 h-[2px] w-full bg-teal transition-transform duration-300 ease-out origin-left ${
+                      active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                    }`}
+                  />
+                </Link>
+              );
+            })}
+          </div>
         </nav>
 
-        <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
-          <div className="hidden lg:flex">
-            <LangSwitch id="lang-desktop-header" />
+        {/* ACTION SECTION */}
+        <div className="action-section flex shrink-0 items-center justify-end gap-2 sm:gap-3 pl-2 xl:pl-4">
+          <div className="hidden xl:flex items-center">
+            <LangSwitch id="lang-desktop-header" lang={lang} setLang={setLang} ariaLabel={t.common.language} />
           </div>
           <Link
             href="/book-appointment"
-            className={`hidden h-10 items-center bg-navy text-[13px] font-semibold text-white transition-all duration-200 hover:bg-navy-deep active:scale-95 lg:inline-flex ${lang === "ta" ? "px-4 whitespace-nowrap" : "max-w-[14rem] truncate px-3.5 lg:px-4"}`}
+            className={`hidden h-10 shrink-0 items-center justify-center whitespace-nowrap bg-navy font-semibold text-white transition-all duration-200 hover:bg-navy-deep active:scale-95 xl:inline-flex ${lang === "ta" ? "px-3 text-[11.5px] xl:px-3 xl:text-[11.5px] 2xl:px-3.5 2xl:text-[12.5px]" : "px-3.5 text-xs xl:px-4 xl:text-[13px]"}`}
           >
             {t.nav.book}
           </Link>
           <button
             type="button"
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center border border-line 2xl:hidden"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center border border-line xl:hidden"
             aria-expanded={open}
             aria-controls="mobile-nav"
             onClick={() => setOpen((v) => !v)}
@@ -139,10 +163,10 @@ export function Header() {
           </button>
         </div>
       </div>
-
     </header>
+
       {open && (
-        <div className="fixed inset-0 z-[45] 2xl:hidden" role="dialog" aria-modal="true">
+        <div className="fixed inset-0 z-[45] xl:hidden" role="dialog" aria-modal="true">
           <button
             type="button"
             className="absolute inset-0 bg-navy-deep/40 animate-fade-in"
@@ -155,7 +179,7 @@ export function Header() {
           >
             <nav className="container-site flex flex-col py-3" aria-label={t.common.mobileNav}>
               <div className="border-b border-line py-3">
-                <LangSwitch id="lang-mobile-nav" />
+                <LangSwitch id="lang-mobile-nav" lang={lang} setLang={setLang} ariaLabel={t.common.language} />
               </div>
               {links.map((l) => (
                 <Link key={l.href} href={l.href} className="border-b border-line py-3.5 text-base font-medium text-navy transition-colors duration-200 hover:text-teal">

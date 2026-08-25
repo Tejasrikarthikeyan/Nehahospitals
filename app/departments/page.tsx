@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useMemo, useState } from "react";
+import { type Department, type Doctor } from "@/lib/data";
 import { SiteShell } from "@/components/SiteShell";
 import { useI18n } from "@/components/LanguageProvider";
 import { useCatalog } from "@/components/CatalogProvider";
@@ -23,11 +24,11 @@ function DepartmentsInner() {
   const [active, setActive] = useState(DEPARTMENTS[0]?.id || "");
   useEffect(() => {
     const open = params.get("open");
-    if (open && DEPARTMENTS.some((d) => d.id === open)) setActive(open);
+    if (open && DEPARTMENTS.some((d: Department) => d.id === open)) setActive(open);
     else if (!active && DEPARTMENTS[0]) setActive(DEPARTMENTS[0].id);
-  }, [params, DEPARTMENTS]);
-  const dept = useMemo(() => DEPARTMENTS.find((d) => d.id === active) || DEPARTMENTS[0], [active, DEPARTMENTS]);
-  const docs = doctors.filter((d) => d.departmentId === dept?.id);
+  }, [params, DEPARTMENTS, active]);
+  const dept = useMemo(() => DEPARTMENTS.find((d: Department) => d.id === active) || DEPARTMENTS[0], [active, DEPARTMENTS]);
+  const docs = doctors.filter((d: Doctor) => d.departmentId === dept?.id);
   if (!dept) return <SiteShell><div className="container-site py-16" /></SiteShell>;
 
   return (
@@ -42,7 +43,7 @@ function DepartmentsInner() {
         <div className="container-site grid gap-10 lg:grid-cols-[260px_1fr]">
           <nav className="lg:sticky lg:top-24 lg:self-start">
             <ul className="divide-y divide-line border-y border-line">
-              {DEPARTMENTS.map((d) => (
+              {DEPARTMENTS.map((d: Department) => (
                 <li key={d.id}>
                   <button
                     type="button"
@@ -67,14 +68,14 @@ function DepartmentsInner() {
             </p>
             <h3 className="mt-8 font-serif text-xl text-navy">{t.deptsPage.services}</h3>
             <ul className="mt-3 space-y-1 text-sm text-muted">
-              {(lang === "ta" ? dept.servicesTa : dept.services).map((s) => (
+              {(lang === "ta" ? dept.servicesTa : dept.services).map((s: string) => (
                 <li key={s} className="transition-transform duration-200 hover:translate-x-1">— {s}</li>
               ))}
             </ul>
             <h3 className="mt-8 font-serif text-xl text-navy">{t.deptsPage.doctors}</h3>
             <ul className="mt-3 divide-y divide-line border-y border-line">
               {docs.length === 0 && <li className="py-3 text-sm text-muted">—</li>}
-              {docs.map((doc) => (
+              {docs.map((doc: Doctor) => (
                 <li key={doc.id} className="flex items-center justify-between py-3 transition-colors duration-200 hover:bg-paper/40 px-2 -mx-2">
                   <Link href={`/doctors/${doc.slug}`} className="text-sm font-medium text-navy transition-colors duration-200 hover:text-teal">
                     {lang === "ta" ? doc.nameTa : doc.name}

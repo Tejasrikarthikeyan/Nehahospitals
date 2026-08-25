@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { type Doctor, type Department } from "@/lib/data";
 import { useCatalog } from "@/components/CatalogProvider";
 import { formatTime12 } from "@/lib/slots";
 import { SiteShell } from "@/components/SiteShell";
@@ -18,7 +19,7 @@ export default function DoctorsPage() {
   const [avail, setAvail] = useState("");
 
   const list = useMemo(() => {
-    return DOCTORS.filter((d) => {
+    return DOCTORS.filter((d: Doctor) => {
       const n = (lang === "ta" ? d.nameTa : d.name).toLowerCase();
       const s = (lang === "ta" ? d.specialityTa : d.speciality).toLowerCase();
       if (name && !n.includes(name.toLowerCase())) return false;
@@ -32,7 +33,7 @@ export default function DoctorsPage() {
       if (avail === "sat" && !d.days.includes(6)) return false;
       return true;
     });
-  }, [name, spec, dept, exp, avail, lang]);
+  }, [name, spec, dept, exp, avail, lang, DOCTORS]);
 
   return (
     <SiteShell>
@@ -45,7 +46,7 @@ export default function DoctorsPage() {
             <input className="h-11 border border-line bg-white px-3 text-sm focus:border-navy focus:ring-1 focus:ring-navy" placeholder={t.doctors.searchSpec} value={spec} onChange={(e) => setSpec(e.target.value)} />
             <select className="h-11 border border-line bg-white px-3 text-sm focus:border-navy focus:ring-1 focus:ring-navy" value={dept} onChange={(e) => setDept(e.target.value)}>
               <option value="">{t.doctors.dept}: {t.doctors.all}</option>
-              {DEPARTMENTS.map((d) => (
+              {DEPARTMENTS.map((d: Department) => (
                 <option key={d.id} value={d.id}>{lang === "ta" ? d.nameTa : d.name}</option>
               ))}
             </select>
@@ -66,11 +67,11 @@ export default function DoctorsPage() {
       <section className="py-10">
         <div className="container-site divide-y divide-line">
           {list.length === 0 && <p className="py-10 text-muted">{t.doctors.none}</p>}
-          {list.map((d, i) => (
+          {list.map((d: Doctor, i: number) => (
             <ScrollReveal key={d.id} delay={i * 60}>
-              <article className="group grid gap-6 py-8 md:grid-cols-[160px_1fr_auto] transition-all duration-300 hover:bg-paper/40 px-3 -mx-3">
-                <div className="overflow-hidden h-40 w-40 max-w-full">
-                  <img src={d.photo} alt={d.name} className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]" />
+              <article className="group grid gap-6 py-8 md:grid-cols-[160px_1fr_auto] card-hover-elevate hover:bg-paper/40 px-3 -mx-3">
+                <div className="img-zoom h-40 w-40 max-w-full">
+                  <img src={d.photo} alt={d.name} className="h-full w-full object-cover" />
                 </div>
                 <div>
                   <h2 className="font-serif text-2xl text-navy transition-colors duration-200 group-hover:text-teal">{lang === "ta" ? d.nameTa : d.name}</h2>
@@ -81,7 +82,7 @@ export default function DoctorsPage() {
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 self-center">
-                  <Link href={`/doctors/${d.slug}`} className="inline-flex h-10 items-center justify-center border border-navy px-4 text-sm font-semibold text-navy transition-all duration-200 hover:bg-navy hover:text-white active:scale-95">
+                  <Link href={`/doctors/${d.slug}`} className="inline-flex h-10 items-center justify-center bg-navy px-4 text-sm font-semibold text-white transition-all duration-200 hover:bg-navy-deep active:scale-95">
                     {t.doctors.view}
                   </Link>
                   <Link href={`/book-appointment?doctor=${d.id}`} className="inline-flex h-10 items-center justify-center bg-navy px-4 text-sm font-semibold text-white transition-all duration-200 hover:bg-navy-deep hover:shadow active:scale-95">

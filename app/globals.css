@@ -1,5 +1,58 @@
 @import "tailwindcss";
 
+/* ─── Cross-browser normalization ─────────────────────────────────────────
+   Ensures identical layout rendering in Chrome, Edge, Firefox, and Safari.
+   ──────────────────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -moz-tab-size: 4;
+  tab-size: 4;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Prevent inline-block gap and flex overflow quirks in Chrome */
+img,
+video,
+svg,
+iframe {
+  display: block;
+  max-width: 100%;
+}
+
+/* Ensure consistent baseline for flex/grid children */
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: inherit;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+/* Consistent table border spacing */
+table {
+  text-indent: 0;
+  border-color: inherit;
+  border-collapse: collapse;
+}
+
 :root {
   --navy: #0a3558;
   --navy-deep: #07263f;
@@ -45,6 +98,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -52,7 +106,9 @@ body {
   color: var(--ink);
   font-family: var(--font-sans), system-ui, sans-serif;
   line-height: 1.6;
+  width: 100%;
   max-width: 100%;
+  overflow-x: hidden;
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
 }
@@ -61,11 +117,6 @@ body.nav-open {
   overflow: hidden;
 }
 
-img,
-video,
-iframe {
-  max-width: 100%;
-}
 
 @media (max-width: 767px) {
   input,
@@ -80,16 +131,6 @@ h1, h2, h3, .font-serif {
   letter-spacing: -0.02em;
 }
 
-/* Tamil font & alignment normalization to prevent layout jumps when switching languages */
-:lang(ta), [lang="ta"] {
-  letter-spacing: 0em !important;
-  line-height: 1.5;
-}
-
-:lang(ta) h1, :lang(ta) h2, :lang(ta) h3, :lang(ta) .font-serif {
-  letter-spacing: 0em !important;
-  line-height: 1.35;
-}
 
 a {
   text-decoration: none;
@@ -104,13 +145,17 @@ button, input, select, textarea {
 }
 
 .container-site {
-  width: min(1180px, calc(100% - 1.5rem));
+  width: min(1440px, calc(100% - 2rem));
   margin-inline: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 @media (min-width: 640px) {
   .container-site {
-    width: min(1180px, calc(100% - 2rem));
+    width: min(1440px, calc(100% - 3rem));
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 }
 
@@ -136,16 +181,29 @@ button, input, select, textarea {
 
 /* Micro-interactions & Subtle Animation Enhancements */
 
-/* Button & interactive click micro-interaction */
+/* Global Button Styling: 4px subtle rounded corners */
 button,
 a.inline-flex,
 a.inline-block,
 .btn-interactive {
-  transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-              color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 4px;
+  transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Ensure filled primary buttons maintain white text in all states */
+.bg-navy,
+.bg-teal {
+  color: #ffffff !important;
+}
+
+button:disabled,
+button[disabled] {
+  color: #ffffff !important;
+  opacity: 0.55;
 }
 
 button:active:not(:disabled),
@@ -159,7 +217,7 @@ a.inline-block:active,
 input,
 select,
 textarea {
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  transition: border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease;
 }
 
 input:focus,
@@ -174,39 +232,41 @@ textarea:focus {
 }
 
 .img-zoom img {
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 
 .img-zoom:hover img,
 img.img-hover-zoom:hover {
-  transform: scale(1.02);
+  transform: scale(1.025);
 }
 
 /* Card Subtle Elevation on Hover */
 .card-hover-elevate {
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+  will-change: transform, box-shadow;
 }
 
 .card-hover-elevate:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px -4px rgba(10, 53, 88, 0.08);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px -4px rgba(10, 53, 88, 0.08);
 }
 
 /* Subtle Arrow Shift on Hover */
 .group:hover .arrow-shift {
-  transform: translateX(3px);
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateX(4px);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .arrow-shift {
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Entrance Animations */
 @keyframes nhFadeUp {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -234,6 +294,37 @@ img.img-hover-zoom:hover {
   }
 }
 
+@keyframes nhPageEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes nhModalBackdrop {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes nhModalContent {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 @keyframes nhCheckmark {
   0% {
     stroke-dashoffset: 50;
@@ -254,7 +345,7 @@ img.img-hover-zoom:hover {
     transform: scale(1) translate(0, 0);
   }
   50% {
-    transform: scale(1.03) translate(-0.5%, -0.5%);
+    transform: scale(1.025) translate(-0.4%, -0.4%);
   }
 }
 
@@ -268,7 +359,7 @@ img.img-hover-zoom:hover {
 }
 
 .img-slow-pan {
-  animation: nhSlowPan 18s ease-in-out infinite;
+  animation: nhSlowPan 20s ease-in-out infinite;
   will-change: transform;
 }
 
@@ -282,7 +373,7 @@ img.img-hover-zoom:hover {
     transform: scale(1);
   }
   50% {
-    transform: scale(1.15);
+    transform: scale(1.12);
   }
   100% {
     transform: scale(1);
@@ -291,14 +382,32 @@ img.img-hover-zoom:hover {
 
 .animate-fade-up {
   animation: nhFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform;
 }
 
 .animate-fade-in {
   animation: nhFadeIn 0.4s ease-out forwards;
+  will-change: opacity;
 }
 
 .animate-scale-in {
   animation: nhScaleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform;
+}
+
+.animate-page-entrance {
+  animation: nhPageEntrance 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform;
+}
+
+.animate-modal-backdrop {
+  animation: nhModalBackdrop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity;
+}
+
+.animate-modal-content {
+  animation: nhModalContent 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform;
 }
 
 .animate-pulse-once {
@@ -315,7 +424,7 @@ img.img-hover-zoom:hover {
 /* Scroll reveal initial and active states */
 .reveal-init {
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(14px);
   transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
@@ -340,6 +449,11 @@ img.img-hover-zoom:hover {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
+  }
+
+  .img-slow-pan,
+  .img-subtle-float {
+    animation: none !important;
   }
 }
 

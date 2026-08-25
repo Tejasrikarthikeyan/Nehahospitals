@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { HOSPITAL } from "@/lib/data";
+import { HOSPITAL, Doctor, Department } from "@/lib/data";
 import { DAY_NAMES } from "@/lib/i18n";
 import { formatTime12, upcomingDates } from "@/lib/slots";
 import { SiteShell } from "@/components/SiteShell";
@@ -13,7 +13,7 @@ export default function DoctorProfilePage() {
   const { slug } = useParams<{ slug: string }>();
   const { t, lang } = useI18n();
   const { doctors, departments } = useCatalog();
-  const doctor = doctors.find((d) => d.slug === slug);
+  const doctor = doctors.find((d: Doctor) => d.slug === slug);
   if (!doctor) {
     return (
       <SiteShell>
@@ -26,9 +26,9 @@ export default function DoctorProfilePage() {
       </SiteShell>
     );
   }
-  const dept = departments.find((d) => d.id === doctor.departmentId);
+  const dept = departments.find((d: Department) => d.id === doctor.departmentId);
   const dates = upcomingDates(doctor, 14);
-  const days = doctor.days.map((d) => DAY_NAMES[lang][d]).join(", ");
+  const days = doctor.days.map((d: number) => DAY_NAMES[lang][d]).join(", ");
 
   return (
     <SiteShell>
@@ -73,7 +73,7 @@ export default function DoctorProfilePage() {
             <p className="mt-4 text-[15px] leading-7 text-muted">{lang === "ta" ? doctor.bioTa : doctor.bio}</p>
             <h2 className="mt-10 font-serif text-2xl text-navy">{t.profile.expertise}</h2>
             <ul className="mt-4 space-y-2 text-sm text-muted">
-              {(lang === "ta" ? doctor.expertiseTa : doctor.expertise).map((e) => (
+              {(lang === "ta" ? doctor.expertiseTa : doctor.expertise).map((e: string) => (
                 <li key={e}>— {e}</li>
               ))}
             </ul>
@@ -90,7 +90,7 @@ export default function DoctorProfilePage() {
             </p>
             <h3 className="mt-8 font-serif text-xl text-navy">{t.profile.dates}</h3>
             <ul className="mt-3 space-y-1 text-sm text-muted">
-              {dates.slice(0, 8).map((d) => (
+              {dates.slice(0, 8).map((d: string) => (
                 <li key={d}>{d}</li>
               ))}
             </ul>

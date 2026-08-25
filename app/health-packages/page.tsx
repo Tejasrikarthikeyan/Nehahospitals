@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { fmtINR } from "@/lib/data";
+import { fmtINR, type HealthPackage } from "@/lib/data";
 import { SiteShell } from "@/components/SiteShell";
 import { useI18n } from "@/components/LanguageProvider";
 import { useCatalog } from "@/components/CatalogProvider";
@@ -12,7 +12,7 @@ export default function PackagesPage() {
   const { t, lang } = useI18n();
   const { packages: PACKAGES } = useCatalog();
   const [open, setOpen] = useState<string | null>(null);
-  const pkg = PACKAGES.find((p) => p.id === open);
+  const pkg = PACKAGES.find((p: HealthPackage) => p.id === open);
 
   return (
     <SiteShell>
@@ -24,7 +24,7 @@ export default function PackagesPage() {
       </section>
       <section className="py-10">
         <div className="container-site divide-y divide-line border-y border-line">
-          {PACKAGES.map((p, i) => (
+          {PACKAGES.map((p: HealthPackage, i: number) => (
             <ScrollReveal key={p.id} delay={i * 70}>
               <article className="group grid gap-4 py-7 md:grid-cols-[1fr_160px_auto] md:items-center transition-colors duration-200 hover:bg-paper/40 px-3 -mx-3">
                 <div>
@@ -35,7 +35,7 @@ export default function PackagesPage() {
                 </div>
                 <p className="font-serif text-2xl text-navy">{fmtINR(p.price)}</p>
                 <div className="flex flex-wrap gap-2">
-                  <button type="button" onClick={() => setOpen(p.id)} className="h-10 border border-navy px-4 text-sm font-semibold text-navy transition-all duration-200 hover:bg-navy hover:text-white active:scale-95">
+                  <button type="button" onClick={() => setOpen(p.id)} className="h-10 bg-teal px-4 text-sm font-semibold text-white transition-all duration-200 hover:bg-teal-dark active:scale-95">
                     {t.packages.details}
                   </button>
                   <Link href={`/book-appointment?package=${p.id}`} className="inline-flex h-10 items-center bg-navy px-4 text-sm font-semibold text-white transition-all duration-200 hover:bg-navy-deep active:scale-95">
@@ -48,13 +48,13 @@ export default function PackagesPage() {
         </div>
       </section>
       {pkg && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-navy/50 p-4 animate-fade-in" onClick={() => setOpen(null)}>
-          <div className="max-h-[80vh] w-full max-w-lg overflow-auto bg-white p-8 animate-scale-in" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-navy/50 p-4 animate-modal-backdrop" onClick={() => setOpen(null)}>
+          <div className="max-h-[80vh] w-full max-w-lg overflow-auto bg-white p-8 animate-modal-content" onClick={(e) => e.stopPropagation()}>
             <h3 className="font-serif text-2xl text-navy">{lang === "ta" ? pkg.nameTa : pkg.name}</h3>
             <p className="mt-2 text-sm text-muted">{lang === "ta" ? pkg.suitableTa : pkg.suitable}</p>
             <p className="mt-4 text-sm font-semibold text-navy">{t.packages.tests}</p>
             <ul className="mt-2 space-y-1 text-sm text-muted">
-              {(lang === "ta" ? pkg.testsTa : pkg.tests).map((x) => (
+              {(lang === "ta" ? pkg.testsTa : pkg.tests).map((x: string) => (
                 <li key={x}>— {x}</li>
               ))}
             </ul>

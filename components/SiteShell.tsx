@@ -15,7 +15,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen flex-col">
       <Header />
       <div className="flex min-h-0 flex-1 flex-col overflow-x-clip pt-[var(--header-h)]">
-        <main id="main" className={`flex-1 ${showBookFab ? "pb-20 md:pb-0" : ""}`}>
+        <main id="main" className={`flex-1 animate-page-entrance ${showBookFab ? "pb-20 md:pb-0" : ""}`}>
           {children}
         </main>
         <Footer />

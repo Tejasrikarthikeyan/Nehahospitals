@@ -3,10 +3,10 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
-import { HOSPITAL } from "@/lib/data";
+import { HOSPITAL, type Doctor, type Department } from "@/lib/data";
 import { MONTHS } from "@/lib/i18n";
 import { formatLongDate, formatTime12, upcomingDates } from "@/lib/slots";
-import { bookApiError } from "@/lib/book-error";
+import { createAppointment, getSlots, sendOtp as apiSendOtp, verifyOtp as apiVerifyOtp } from "@/lib/api";
 import { SiteShell } from "@/components/SiteShell";
 import { useI18n } from "@/components/LanguageProvider";
 import { useCatalog } from "@/components/CatalogProvider";
@@ -32,8 +32,7 @@ type ExistingAppt = {
   departmentNameTa: string;
 };
 
-const STEPS = ["phone", "otp", "existing", "dept", "doctor", "date", "time", "details", "review", "done"] as const;
-type Step = (typeof STEPS)[number];
+type Step = "phone" | "otp" | "existing" | "dept" | "doctor" | "date" | "time" | "details" | "review" | "done";
 
 export default function BookPage() {
   return (
@@ -78,14 +77,15 @@ function BookInner() {
   const [email, setEmail] = useState("");
   const [reason, setReason] = useState("");
   const [error, setError] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<BookingResult | null>(null);
   const [existing, setExisting] = useState<ExistingAppt[]>([]);
 
-  const doctor = DOCTORS.find((d) => d.id === doctorId);
-  const dept = DEPARTMENTS.find((d) => d.id === (doctor?.departmentId || deptId));
+  const doctor = DOCTORS.find((d: Doctor) => d.id === doctorId);
+  const dept = DEPARTMENTS.find((d: Department) => d.id === (doctor?.departmentId || deptId));
   const dates = doctor ? upcomingDates(doctor) : [];
-  const doctors = deptId ? DOCTORS.filter((d) => d.departmentId === deptId) : DOCTORS;
+  const doctors = deptId ? DOCTORS.filter((d: Doctor) => d.departmentId === deptId) : DOCTORS;
 
   function statusText(s: string) {
     if (s === "confirmed") return t.admin.confirmed;
@@ -101,19 +101,21 @@ function BookInner() {
 
   useEffect(() => {
     if (doctorId && !deptId) {
-      const d = DOCTORS.find((x) => x.id === doctorId);
+      const d = DOCTORS.find((x: Doctor) => x.id === doctorId);
       if (d) setDeptId(d.departmentId);
     }
-  }, [doctorId, deptId]);
+  }, [doctorId, deptId, DOCTORS]);
 
   useEffect(() => {
     if (step !== "time" || !doctorId || !date) return;
     let cancelled = false;
     setSlotsLoading(true);
-    fetch(`/api/slots?doctorId=${doctorId}&date=${date}`)
-      .then((r) => r.json())
-      .then((d) => {
-        if (!cancelled) setSlots(d.slots || []);
+    getSlots(doctorId, date)
+      .then((s) => {
+        if (!cancelled) setSlots(s || []);
+      })
+      .catch((err: unknown) => {
+        if (!cancelled) setError(err instanceof Error ? err.message : "Failed to load slots.");
       })
       .finally(() => {
         if (!cancelled) setSlotsLoading(false);
@@ -124,42 +126,44 @@ function BookInner() {
   }, [step, doctorId, date]);
 
   async function sendOtp() {
+    if (loading) return;
     setError("");
+    setSuccessMsg("");
     setLoading(true);
-    const res = await fetch("/api/otp/send", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone }),
-    });
-    const data = await res.json();
-    setLoading(false);
-    if (!res.ok) return setError(bookApiError(data.code, t.book));
-    setSmsOtp(data.otp);
-    setStep("otp");
+    try {
+      const data = await apiSendOtp(phone);
+      setLoading(false);
+      if (data.otp) setSmsOtp(data.otp);
+      setSuccessMsg(lang === "ta" ? `+91 ${phone} எண்ணிற்கு OTP வெற்றிகரமாக அனுப்பப்பட்டது.` : `OTP sent successfully to +91 ${phone}`);
+      setStep("otp");
+    } catch (err: unknown) {
+      setLoading(false);
+      setError(err instanceof Error ? err.message : "Unable to connect to Neha Hospitals server.");
+    }
   }
 
   async function verifyOtp() {
+    if (loading) return;
     setError("");
     setLoading(true);
-    const res = await fetch("/api/otp/verify", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone, otp }),
-    });
-    const data = await res.json();
-    setLoading(false);
-    if (!res.ok) return setError(bookApiError(data.code, t.book));
-    const previous = (data.appointments || []) as ExistingAppt[];
-    setExisting(previous);
-    if (previous[0]) {
-      const last = previous[0];
-      setPatientName(last.patientName || "");
-      setAge(last.age || "");
-      if (last.gender) setGender(last.gender);
-      setEmail(last.email || "");
+    try {
+      const data = await apiVerifyOtp(phone, otp);
+      setLoading(false);
+      const previous = (data.appointments || []) as ExistingAppt[];
+      setExisting(previous);
+      if (previous[0]) {
+        const last = previous[0];
+        setPatientName(last.patientName || "");
+        setAge(last.age || "");
+        if (last.gender) setGender(last.gender);
+        setEmail(last.email || "");
+      }
+      if (previous.length) setStep("existing");
+      else continueAfterVerify();
+    } catch (err: unknown) {
+      setLoading(false);
+      setError(err instanceof Error ? err.message : "Invalid OTP.");
     }
-    if (previous.length) setStep("existing");
-    else continueAfterVerify();
   }
 
   function continueAfterVerify() {
@@ -169,29 +173,28 @@ function BookInner() {
   }
 
   async function confirm() {
+    if (loading) return;
     setError("");
     setLoading(true);
-    const waWindow = window.open("about:blank", "nh-whatsapp");
-    const res = await fetch("/api/appointments", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ doctorId, date, time, patientName, age, gender, phone, email, reason }),
-    });
-    const data = await res.json();
-    setLoading(false);
-    if (!res.ok) {
-      waWindow?.close();
-      return setError(bookApiError(data.code, t.book));
+    try {
+      const data = await createAppointment({
+        doctorId,
+        date,
+        time,
+        patientName,
+        age,
+        gender,
+        phone,
+        email,
+        reason,
+      });
+      setLoading(false);
+      setResult(data as unknown as BookingResult);
+      setStep("done");
+    } catch (err: unknown) {
+      setLoading(false);
+      setError(err instanceof Error ? err.message : "This appointment slot is already booked.");
     }
-    setResult(data);
-    if (data.whatsappDelivered) {
-      waWindow?.close();
-    } else if (data.waUrl && waWindow && !waWindow.closed) {
-      waWindow.location.href = data.waUrl;
-    } else {
-      waWindow?.close();
-    }
-    setStep("done");
   }
 
   return (
@@ -219,7 +222,7 @@ function BookInner() {
                 <span className="inline-flex h-12 items-center border border-r-0 border-line px-3 text-sm text-muted">+91</span>
                 <input inputMode="numeric" maxLength={10} className="h-12 flex-1 border border-line px-3 focus:border-navy focus:ring-1 focus:ring-navy" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))} />
               </div>
-              <button disabled={phone.length !== 10 || loading} onClick={sendOtp} className="mt-6 h-12 bg-navy px-6 text-sm font-semibold text-white transition-all duration-200 hover:bg-navy-deep active:scale-95 disabled:opacity-40">
+              <button disabled={phone.length !== 10 || loading} onClick={sendOtp} className="mt-6 h-12 bg-[#07243b] px-6 text-sm font-semibold !text-white disabled:!text-white transition-all duration-200 hover:bg-[#041624] active:scale-95 disabled:opacity-80">
                 {t.book.sendOtp}
               </button>
             </div>
@@ -229,8 +232,16 @@ function BookInner() {
             <div className="animate-fade-in">
               <h2 className="font-serif text-2xl text-navy">{t.book.enterOtp}</h2>
               <p className="mt-2 text-sm text-muted">{t.book.otpHint} +91 {phone}</p>
+              {successMsg && (
+                <div className="mt-4 border border-teal/30 bg-teal/10 px-4 py-3 text-sm font-medium text-teal animate-fade-in flex items-center gap-2">
+                  <svg className="h-5 w-5 shrink-0 text-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>{successMsg}</span>
+                </div>
+              )}
               {smsOtp && (
-                <div className="mt-4 border border-line bg-paper p-4 text-sm animate-scale-in">
+                <div className="mt-3 border border-line bg-paper p-4 text-sm animate-scale-in">
                   <p className="text-xs font-semibold uppercase tracking-wide text-muted">{t.book.smsPreview}</p>
                   <p className="mt-2 text-navy">
                     {t.book.otpSms} <strong className="tracking-[0.3em]">{smsOtp}</strong>. {t.book.otpValid}
@@ -248,10 +259,10 @@ function BookInner() {
                 <button disabled={otp.length !== 6 || loading} onClick={verifyOtp} className="h-12 bg-navy px-6 text-sm font-semibold text-white transition-all duration-200 hover:bg-navy-deep active:scale-95 disabled:opacity-40">
                   {t.book.verify}
                 </button>
-                <button onClick={sendOtp} className="h-12 border border-line px-6 text-sm font-semibold text-navy transition-all duration-200 hover:bg-paper active:scale-95">
+                <button onClick={sendOtp} className="h-12 bg-teal px-6 text-sm font-semibold text-white transition-all duration-200 hover:bg-teal-dark active:scale-95">
                   {t.book.resend}
                 </button>
-                <button type="button" onClick={() => setStep("phone")} className="h-12 text-sm font-semibold text-teal transition-colors duration-200 hover:text-teal-dark">
+                <button type="button" onClick={() => setStep("phone")} className="h-12 bg-navy px-6 text-sm font-semibold text-white transition-all duration-200 hover:bg-navy-deep active:scale-95">
                   {t.book.back}
                 </button>
               </div>
@@ -287,7 +298,7 @@ function BookInner() {
             <div className="animate-fade-in">
               <h2 className="font-serif text-2xl text-navy">{t.book.dept}</h2>
               <ul className="mt-6 divide-y divide-line border-y border-line">
-                {DEPARTMENTS.filter((d) => d.id !== "radiology" && d.id !== "pathology").map((d) => (
+                {DEPARTMENTS.filter((d: Department) => d.id !== "radiology" && d.id !== "pathology").map((d: Department) => (
                   <li key={d.id}>
                     <button
                       type="button"
@@ -312,7 +323,7 @@ function BookInner() {
               <h2 className="font-serif text-2xl text-navy">{t.book.doctor}</h2>
               <p className="mt-1 text-sm text-muted">{lang === "ta" ? dept?.nameTa : dept?.name}</p>
               <ul className="mt-6 divide-y divide-line border-y border-line">
-                {doctors.map((d) => (
+                {doctors.map((d: Doctor) => (
                   <li key={d.id} className="flex items-center justify-between gap-4 py-4 transition-colors duration-200 hover:bg-paper/40 px-2 -mx-2">
                     <div>
                       <p className="font-medium text-navy">{lang === "ta" ? d.nameTa : d.name}</p>
@@ -333,7 +344,7 @@ function BookInner() {
                   </li>
                 ))}
               </ul>
-              <button className="mt-4 text-sm text-teal transition-colors duration-200 hover:text-teal-dark" onClick={() => setStep("dept")}>{t.book.back}</button>
+              <button className="mt-4 inline-flex h-9 items-center bg-navy px-4 text-xs font-semibold text-white transition-colors duration-200 hover:bg-navy-deep" onClick={() => setStep("dept")}>{t.book.back}</button>
             </div>
           )}
 
@@ -354,14 +365,14 @@ function BookInner() {
                         setTime("");
                         setStep("time");
                       }}
-                      className={`h-16 border text-sm ${date === iso ? "border-navy bg-navy text-white" : "border-line text-navy"}`}
+                      className={`h-16 border text-sm font-semibold transition-all duration-200 ${date === iso ? "border-teal bg-teal text-white shadow" : "border-navy bg-navy text-white hover:bg-navy-deep"}`}
                     >
                       {label}
                     </button>
                   );
                 })}
               </div>
-              <button type="button" className="mt-4 text-sm text-teal" onClick={() => setStep("doctor")}>{t.book.back}</button>
+              <button type="button" className="mt-4 inline-flex h-9 items-center bg-navy px-4 text-xs font-semibold text-white transition-colors duration-200 hover:bg-navy-deep" onClick={() => setStep("doctor")}>{t.book.back}</button>
             </div>
           )}
 
@@ -370,8 +381,8 @@ function BookInner() {
               <h2 className="font-serif text-2xl text-navy">{t.book.time}</h2>
               <p className="mt-2 text-sm text-muted">{t.book.timeHint}</p>
               <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-xs">
-                <span><i className="mr-1 inline-block h-2.5 w-2.5 bg-white ring-1 ring-line" /> {t.book.available}</span>
-                <span><i className="mr-1 inline-block h-2.5 w-2.5 bg-navy" /> {t.book.selected}</span>
+                <span><i className="mr-1 inline-block h-2.5 w-2.5 bg-navy" /> {t.book.available}</span>
+                <span><i className="mr-1 inline-block h-2.5 w-2.5 bg-teal" /> {t.book.selected}</span>
                 <span><i className="mr-1 inline-block h-2.5 w-2.5 bg-[#d9dee5]" /> {t.book.booked}</span>
               </div>
               {slotsLoading && <p className="mt-6 text-sm text-muted">{t.book.loadingSlots}</p>}
@@ -387,8 +398,8 @@ function BookInner() {
                       key={s.time}
                       disabled={booked}
                       onClick={() => setTime(s.time)}
-                      className={`h-11 text-sm ${
-                        booked ? "cursor-not-allowed bg-[#e8edf2] text-muted" : selected ? "bg-navy text-white" : "border border-line text-navy"
+                      className={`h-11 text-sm font-semibold transition-all duration-200 ${
+                        booked ? "cursor-not-allowed bg-[#e8edf2] text-muted" : selected ? "bg-teal text-white shadow" : "bg-navy text-white hover:bg-navy-deep"
                       }`}
                     >
                       {formatTime12(s.time, lang)}
@@ -397,7 +408,7 @@ function BookInner() {
                 })}
               </div>
               <div className="mt-6 flex flex-wrap gap-3">
-                <button type="button" onClick={() => setStep("date")} className="h-12 border border-line px-6 text-sm font-semibold text-navy">
+                <button type="button" onClick={() => setStep("date")} className="h-12 bg-navy px-6 text-sm font-semibold text-white transition-all duration-200 hover:bg-navy-deep active:scale-95">
                   {t.book.back}
                 </button>
                 <button disabled={!time} onClick={() => setStep(patientName && age ? "review" : "details")} className="h-12 bg-navy px-6 text-sm font-semibold text-white disabled:opacity-40">
@@ -429,7 +440,7 @@ function BookInner() {
               <input className="h-11 w-full border border-line px-3 text-sm" placeholder={t.book.email} value={email} onChange={(e) => setEmail(e.target.value)} />
               <textarea className="min-h-24 w-full border border-line px-3 py-2 text-sm" placeholder={t.book.reason} value={reason} onChange={(e) => setReason(e.target.value)} />
               <div className="flex flex-wrap gap-3">
-                <button type="button" className="h-12 border border-line px-6 text-sm font-semibold text-navy" onClick={() => setStep("time")}>{t.book.back}</button>
+                <button type="button" className="h-12 bg-navy px-6 text-sm font-semibold text-white transition-all duration-200 hover:bg-navy-deep active:scale-95" onClick={() => setStep("time")}>{t.book.back}</button>
                 <button className="h-12 bg-navy px-6 text-sm font-semibold text-white">{t.book.next}</button>
               </div>
             </form>
@@ -448,7 +459,7 @@ function BookInner() {
                 <Row k={t.book.mobile} v={`+91 ${phone}`} />
               </dl>
               <div className="mt-6 flex flex-wrap gap-3">
-                <button type="button" className="h-12 border border-line px-6 text-sm font-semibold text-navy" onClick={() => setStep(patientName && age ? "time" : "details")}>{t.book.back}</button>
+                <button type="button" className="h-12 bg-navy px-6 text-sm font-semibold text-white transition-all duration-200 hover:bg-navy-deep active:scale-95" onClick={() => setStep(patientName && age ? "time" : "details")}>{t.book.back}</button>
                 <button disabled={loading} onClick={confirm} className="h-12 bg-navy px-6 text-sm font-semibold text-white">
                   {t.book.confirm}
                 </button>
@@ -457,7 +468,7 @@ function BookInner() {
           )}
 
           {step === "done" && result && (
-            <div className="text-center">
+            <div className="text-center animate-fade-up">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-teal">{t.book.success}</p>
               <h2 className="mt-3 font-serif text-4xl text-navy">{result.appointment.id}</h2>
               <p className="mt-4 text-sm text-muted">{t.book.waNote}</p>
@@ -475,7 +486,7 @@ function BookInner() {
               </dl>
               <div className="mt-8 flex flex-wrap justify-center gap-3">
                 <a
-                  className="inline-flex h-11 items-center border border-navy px-4 text-sm font-semibold text-navy"
+                  className="inline-flex h-11 items-center bg-navy px-5 text-sm font-semibold text-white transition-all duration-200 hover:bg-navy-deep active:scale-95"
                   href={icsHref(result)}
                   download={`${result.appointment.id}.ics`}
                 >

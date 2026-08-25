@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { HOSPITAL } from "@/lib/data";
 import type { Department, Doctor, HealthPackage, HospitalService } from "@/lib/data";
@@ -9,6 +9,23 @@ import { formatTime12, generateSlots, localYMD, upcomingDates, displayLocale } f
 import { Logo } from "@/components/Logo";
 import { useI18n } from "@/components/LanguageProvider";
 import type { Appointment } from "@/lib/types";
+
+import {
+  createDepartment,
+  createDoctor,
+  createPackage,
+  createService,
+  getAppointments as apiGetAppointments,
+  getDepartments as apiGetDepartments,
+  getDoctors as apiGetDoctors,
+  getNotifications as apiGetNotifications,
+  getPackages as apiGetPackages,
+  getServices as apiGetServices,
+  getSettings as apiGetSettings,
+  getSlots as apiGetSlots,
+  updateAppointment as apiUpdateAppointment,
+  updateSetting as apiUpdateSetting,
+} from "@/lib/api";
 
 const CODE = "NEHA2026";
 const occupy = ["booked", "upcoming", "confirmed", "rescheduled", "arrived"];
@@ -94,41 +111,39 @@ export default function AdminPage() {
     if (sessionStorage.getItem("nh-staff") === "1") setAuthed(true);
   }, []);
 
-  async function load() {
-    const [a, n, s, c, h] = await Promise.all([
-      fetch("/api/appointments").then((r) => r.json()),
-      fetch("/api/notifications").then((r) => r.json()),
-      fetch("/api/settings").then((r) => r.json()),
-      fetch("/api/admin/doctors").then((r) => r.json()).catch(() => ({})),
-      fetch("/api/admin/hospital").then((r) => r.json()).catch(() => ({})),
-    ]);
-    const [dpt, svc, pkg] = await Promise.all([
-      fetch("/api/admin/departments").then((r) => r.json()),
-      fetch("/api/admin/services").then((r) => r.json()),
-      fetch("/api/admin/packages").then((r) => r.json()),
-    ]);
-    setAppointments(a.appointments || []);
-    setNotes(n.notifications || []);
-    setSettings(s.settings || {});
-    setDoctors(c.doctors || []);
-    setDepartments(dpt.departments || []);
-    setServices(svc.services || []);
-    setPackages(pkg.packages || []);
-    if (h.hospital) setHospital({ ...HOSPITAL, ...h.hospital });
-    if (!timelineDoc && (c.doctors || [])[0]) setTimelineDoc(c.doctors[0].id);
-  }
+  const load = useCallback(async () => {
+    try {
+      const [a, n, s, c, dpt, svc, pkg] = await Promise.all([
+        apiGetAppointments(),
+        apiGetNotifications(),
+        apiGetSettings(),
+        apiGetDoctors(),
+        apiGetDepartments(),
+        apiGetServices(),
+        apiGetPackages(),
+      ]);
+      setAppointments(Array.isArray(a) ? (a as unknown as Appointment[]) : []);
+      setNotes(Array.isArray(n) ? (n as unknown as Note[]) : []);
+      setSettings((s as Record<string, boolean | number | string>) || {});
+      setDoctors(Array.isArray(c) ? (c as unknown as Doctor[]) : []);
+      setDepartments(Array.isArray(dpt) ? (dpt as unknown as Department[]) : []);
+      setServices(Array.isArray(svc) ? (svc as unknown as HospitalService[]) : []);
+      setPackages(Array.isArray(pkg) ? (pkg as unknown as HealthPackage[]) : []);
+      if (!timelineDoc && Array.isArray(c) && c[0]) setTimelineDoc((c[0] as unknown as Doctor).id);
+    } catch (err) {
+      console.error("Admin load error:", err);
+    }
+  }, [timelineDoc]);
 
   useEffect(() => {
     if (authed) load();
-  }, [authed]);
+  }, [authed, load]);
 
   useEffect(() => {
     if (!reschedule) return;
     const docId = newDoctorId || reschedule.doctorId;
     if (!newDate || !docId) return;
-    fetch(`/api/slots?doctorId=${docId}&date=${newDate}`)
-      .then((r) => r.json())
-      .then((d) => setRsSlots(d.slots || []));
+    apiGetSlots(docId, newDate).then((slots) => setRsSlots(slots || []));
   }, [reschedule, newDoctorId, newDate]);
 
   const today = localYMD();
@@ -195,22 +210,22 @@ export default function AdminPage() {
     });
   }, [live, A.active, A.inactive]);
 
-  async function act(id: string, action: string, extra?: object) {
-    const res = await fetch("/api/appointments", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, action, ...extra }),
-    });
-    if (action === "complete") {
-      setFlashId(id);
-      setTimeout(() => setFlashId(""), 1200);
-    }
-    await load();
-    setReschedule(null);
-    setCancelAppt(null);
-    if (detail?.id === id) {
-      const data = await res.json();
-      setDetail(data.appointment || null);
+  async function act(id: string, action: string, extra?: Record<string, unknown>) {
+    try {
+      const data = await apiUpdateAppointment({ id, action: action as "status" | "reschedule" | "cancel", ...(extra || {}) });
+      if (action === "complete" || action === "status") {
+        setFlashId(id);
+        setTimeout(() => setFlashId(""), 1200);
+      }
+      await load();
+      setReschedule(null);
+      setCancelAppt(null);
+      if (detail?.id === id) {
+        setDetail((data.appointment as unknown as Appointment) || null);
+      }
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to update appointment";
+      alert(message);
     }
   }
 
@@ -490,8 +505,8 @@ export default function AdminPage() {
                       <span>{d.name} · {d.speciality} · {d.experience} {A.experience} · {formatTime12(d.start, lang)}–{formatTime12(d.end, lang)} · {d.status === "inactive" ? A.inactive : A.active}</span>
                       <span className="flex flex-wrap gap-3">
                         <button className="text-xs font-semibold text-navy" onClick={() => { setFormOpen("doctor"); setEditing({ name: d.name, id: d.id, slug: d.slug, photo: d.photo, qualifications: d.qualifications, speciality: d.speciality, departmentId: d.departmentId, experience: String(d.experience), registration: d.registration || "", fee: String(d.fee || ""), expertise: (d.expertise || []).join(", "), start: d.start, end: d.end, lunchStart: d.lunchStart, lunchEnd: d.lunchEnd, eveningStart: d.eveningStart || "", eveningEnd: d.eveningEnd || "", days: d.days.join(","), bio: d.bio, status: d.status || "active" }); }}>{A.edit}</button>
-                        <button className="text-xs font-semibold text-navy" onClick={async () => { await fetch("/api/admin/doctors", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: d.id, action: "toggle" }) }); load(); }}>{A.toggle}</button>
-                        <button className="text-xs font-semibold text-emergency" onClick={async () => { await fetch(`/api/admin/doctors?id=${d.id}`, { method: "DELETE" }); load(); }}>{A.del}</button>
+                        <button className="text-xs font-semibold text-navy" onClick={async () => { await createDoctor({ id: d.id, action: "toggle" }); load(); }}>{A.toggle}</button>
+                        <button className="text-xs font-semibold text-emergency" onClick={async () => { await createDoctor({ id: d.id, action: "delete" }); load(); }}>{A.del}</button>
                       </span>
                     </li>
                   ))}
@@ -499,7 +514,7 @@ export default function AdminPage() {
                 {formOpen === "doctor" && (
                   <form className="mt-6 grid gap-3 border border-line bg-white p-4 sm:grid-cols-2" onSubmit={async (e) => {
                     e.preventDefault();
-                    await fetch("/api/admin/doctors", { method: editing.id ? "PATCH" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(editing) });
+                    await createDoctor(editing);
                     setFormOpen(null);
                     load();
                   }}>
@@ -559,8 +574,8 @@ export default function AdminPage() {
                       <span>{d.name} · {d.opd} · {doctors.filter((x) => x.departmentId === d.id).length} · {d.status === "inactive" ? A.inactive : A.active}</span>
                       <span className="flex flex-wrap gap-3">
                         <button className="text-xs font-semibold text-navy" onClick={() => { setFormOpen("dept"); setEditing(d as unknown as Record<string, string>); }}>{A.edit}</button>
-                        <button className="text-xs font-semibold text-navy" onClick={async () => { await fetch("/api/admin/departments", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: d.id, action: "toggle" }) }); load(); }}>{A.toggle}</button>
-                        <button className="text-xs font-semibold text-emergency" onClick={async () => { await fetch(`/api/admin/departments?id=${d.id}`, { method: "DELETE" }); load(); }}>{A.del}</button>
+                        <button className="text-xs font-semibold text-navy" onClick={async () => { await createDepartment({ id: d.id, action: "toggle" }); load(); }}>{A.toggle}</button>
+                        <button className="text-xs font-semibold text-emergency" onClick={async () => { await createDepartment({ id: d.id, action: "delete" }); load(); }}>{A.del}</button>
                       </span>
                     </li>
                   ))}
@@ -568,7 +583,7 @@ export default function AdminPage() {
                 {formOpen === "dept" && (
                   <form className="mt-6 grid gap-3 border border-line bg-white p-4 sm:grid-cols-2" onSubmit={async (e) => {
                     e.preventDefault();
-                    await fetch("/api/admin/departments", { method: editing.id ? "PATCH" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(editing) });
+                    await createDepartment(editing);
                     setFormOpen(null);
                     load();
                   }}>
@@ -650,8 +665,8 @@ export default function AdminPage() {
                       <span className="flex items-center gap-3 text-xs font-semibold">
                         <span className="text-muted">{s.status === "inactive" ? A.inactive : A.active}</span>
                         <button className="text-navy" onClick={() => { setFormOpen("svc"); setEditing(s as unknown as Record<string, string>); }}>{A.edit}</button>
-                        <button className="text-navy" onClick={async () => { await fetch("/api/admin/services", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: s.id, action: "toggle" }) }); load(); }}>{A.toggle}</button>
-                        <button className="text-emergency" onClick={async () => { await fetch(`/api/admin/services?id=${s.id}`, { method: "DELETE" }); load(); }}>{A.del}</button>
+                        <button className="text-navy" onClick={async () => { await createService({ id: s.id, action: "toggle" }); load(); }}>{A.toggle}</button>
+                        <button className="text-emergency" onClick={async () => { await createService({ id: s.id, action: "delete" }); load(); }}>{A.del}</button>
                       </span>
                     </li>
                   ))}
@@ -659,7 +674,7 @@ export default function AdminPage() {
                 {formOpen === "svc" && (
                   <form className="mt-6 grid gap-3 border border-line bg-white p-4" onSubmit={async (e) => {
                     e.preventDefault();
-                    await fetch("/api/admin/services", { method: editing.id ? "PATCH" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(editing) });
+                    await createService(editing);
                     setFormOpen(null);
                     load();
                   }}>
@@ -683,8 +698,8 @@ export default function AdminPage() {
                       <span>{p.name} · ₹{p.price} · {p.status === "inactive" ? A.inactive : A.active}</span>
                       <span className="flex flex-wrap gap-3">
                         <button className="text-xs font-semibold text-navy" onClick={() => { setFormOpen("pkg"); setEditing({ ...p, tests: (p.tests || []).join(", ") } as unknown as Record<string, string>); }}>{A.edit}</button>
-                        <button className="text-xs font-semibold text-navy" onClick={async () => { await fetch("/api/admin/packages", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: p.id, action: "toggle" }) }); load(); }}>{A.toggle}</button>
-                        <button className="text-xs font-semibold text-emergency" onClick={async () => { await fetch(`/api/admin/packages?id=${p.id}`, { method: "DELETE" }); load(); }}>{A.del}</button>
+                        <button className="text-xs font-semibold text-navy" onClick={async () => { await createPackage({ id: p.id, action: "toggle" }); load(); }}>{A.toggle}</button>
+                        <button className="text-xs font-semibold text-emergency" onClick={async () => { await createPackage({ id: p.id, action: "delete" }); load(); }}>{A.del}</button>
                       </span>
                     </li>
                   ))}
@@ -692,7 +707,7 @@ export default function AdminPage() {
                 {formOpen === "pkg" && (
                   <form className="mt-6 grid gap-3 border border-line bg-white p-4 sm:grid-cols-2" onSubmit={async (e) => {
                     e.preventDefault();
-                    await fetch("/api/admin/packages", { method: editing.id ? "PATCH" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(editing) });
+                    await createPackage(editing);
                     setFormOpen(null);
                     load();
                   }}>
@@ -761,7 +776,7 @@ export default function AdminPage() {
                       <input type="checkbox" checked={!!settings[k]} onChange={async (e) => {
                         const next = { ...settings, [k]: e.target.checked };
                         setSettings(next);
-                        await fetch("/api/settings", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(next) });
+                        await apiUpdateSetting(next);
                       }} />
                     </li>
                   ))}
@@ -775,9 +790,8 @@ export default function AdminPage() {
                   e.preventDefault();
                   const fd = new FormData(e.currentTarget);
                   const body = Object.fromEntries(fd.entries());
-                  const res = await fetch("/api/admin/hospital", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-                  const d = await res.json();
-                  if (d.hospital) setHospital({ ...HOSPITAL, ...d.hospital });
+                  const res = (await apiUpdateSetting(body)) as Record<string, unknown>;
+                  if (res && res.hospital && typeof res.hospital === "object") setHospital((h) => ({ ...h, ...(res.hospital as Record<string, unknown>) }));
                 }}>
                   <input name="name" className={inp} defaultValue={hospital.name} placeholder={A.name} />
                   <input name="phone" className={inp} defaultValue={hospital.phone} placeholder={A.phone} />
